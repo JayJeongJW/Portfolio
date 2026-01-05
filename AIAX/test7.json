@@ -1,0 +1,291 @@
+{
+  "name": "test7",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        16
+      ],
+      "id": "05da6dd3-5fda-459a-91b3-1a09f6f4130d",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://openapi.gg.go.kr/Promsngsmdentrselect",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "KEY",
+              "value": "1b724c1c85a242ffa262e196d803bc4b"
+            },
+            {
+              "name": "Type",
+              "value": "json"
+            },
+            {
+              "name": "pIndex",
+              "value": "1"
+            },
+            {
+              "name": "pSize",
+              "value": "500"
+            }
+          ]
+        },
+        "options": {
+          "batching": {
+            "batch": {}
+          },
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 600000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        224,
+        16
+      ],
+      "id": "2b9fa786-6320-4141-970e-09b813671b7c",
+      "name": "HTTP Request",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// 여기서는 HTTP(1) 응답을 안 쓰고, pIndex 1,2만 만든다\nconst maxPage = 2; // 984개를 pSize=500으로 나누면 2페이지\nconst items = [];\n\nfor (let i = 1; i <= maxPage; i++) {\n  items.push({ json: { pIndex: i } });\n}\n\nreturn items;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        16
+      ],
+      "id": "918622c4-36fc-4076-9adf-75abcb182ae4",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        672,
+        16
+      ],
+      "id": "cad58a6a-027e-4f4b-9f1a-b2cbaf676434",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = $input.first().json.Promsngsmdentrselect[1].row;\n\nreturn rows.map(r => {\n  return {\n    json: {\n      기업자명: r.ENTRPRS_NM,\n      사업자번호: r.BIZMAN_REGIST_NO,\n      주소: r.ADDR,\n      업종: r.INDUTYPE_NM,\n    },\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        16
+      ],
+      "id": "d70b9268-0e2f-43f6-aac9-a39b98f35323",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "url": "https://openapi.gg.go.kr/Promsngsmdentrselect",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "KEY",
+              "value": "1b724c1c85a242ffa262e196d803bc4b"
+            },
+            {
+              "name": "Type",
+              "value": "json"
+            },
+            {
+              "name": "pIndex",
+              "value": "={{ $node[\"Loop Over Items\"].runIndex + 1 }}"
+            },
+            {
+              "name": "pSize",
+              "value": "500"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        896,
+        16
+      ],
+      "id": "2cef470d-dbe0-4fc9-a7e5-82c074f14c52",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "2d508a66-306a-8020-82d5-fb4d47eb213f",
+          "mode": "list",
+          "cachedResultName": "경기 유망 기업",
+          "cachedResultUrl": "https://www.notion.so/2d508a66306a802082d5fb4d47eb213f"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "기업명|title",
+              "title": "={{ $json['기업자명'] }}"
+            },
+            {
+              "key": "사업자등록번호|rich_text",
+              "textContent": "={{ $json['사업자번호'] }}"
+            },
+            {
+              "key": "업종명|rich_text",
+              "textContent": "={{ $json['업종'] }}"
+            },
+            {
+              "key": "주소|rich_text",
+              "textContent": "={{ $json['주소'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        1344,
+        16
+      ],
+      "id": "a4fae29e-f010-4535-8bc2-a551900363ec",
+      "name": "Create a database page",
+      "credentials": {
+        "notionApi": {
+          "id": "bmx1d2lLPPkBeYft",
+          "name": "Notion account 3"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "When clicking ‘Execute workflow’": [
+      {
+        "json": {},
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Create a database page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a database page": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "5b03be93-e603-4273-8b20-c90c24df026f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "df37452c8170ba46bcd0bd45229bb3082b88fbe77398aef13369302538f85ded"
+  },
+  "id": "bRaWNELzWoz0J5Vo",
+  "tags": []
+}

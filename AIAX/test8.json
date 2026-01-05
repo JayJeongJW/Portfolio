@@ -1,0 +1,319 @@
+{
+  "name": "test8",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "72675b9c-ffd4-496c-9656-9410a8c7aec4",
+              "name": "page",
+              "value": 1,
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -64,
+        16
+      ],
+      "id": "5f35989b-5ab7-4b52-9373-d1f976f75e84",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "url": "https://kcia.or.kr/home/inst/inst_company_list.php",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "page",
+              "value": "1"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          },
+          "pagination": {
+            "pagination": {
+              "parameters": {
+                "parameters": [
+                  {
+                    "name": "page",
+                    "value": "={{ $pageCount + 1 }}"
+                  }
+                ]
+              },
+              "limitPagesFetched": true,
+              "maxRequests": 40,
+              "requestInterval": 1000
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        160,
+        16
+      ],
+      "id": "7900a295-b73d-4a95-a70f-7e3046a4d8c3",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "companies",
+              "cssSelector": ".list_box",
+              "returnValue": "html",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        384,
+        16
+      ],
+      "id": "d5e66a02-fb0b-4faa-995c-8a10d7fff8a9",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 'HTML' 노드 이름이 실제 워크플로에서 다르면 바꿔주세요.\nconst nodeName = 'HTML';\n\nlet pageCount = $node[nodeName].runIndex;\nlet allItems = [];\n\nfor (let index = 0; index <= pageCount; index++) {\n  // 각 run에서 나온 items를 모두 합치기\n  allItems = allItems.concat($items(nodeName, 0, index));\n}\n\nreturn allItems;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        608,
+        16
+      ],
+      "id": "81146d81-a3f4-4c3c-99fc-36ab9e7520da",
+      "name": "Code in JavaScript",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "2d508a66-306a-80e2-bf21-e8dd6a503581",
+          "mode": "list",
+          "cachedResultName": "대한화장품협회목록",
+          "cachedResultUrl": "https://www.notion.so/2d508a66306a80e2bf21e8dd6a503581"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "기업명|title",
+              "title": "={{ $json.name }}"
+            },
+            {
+              "key": "대표자|rich_text",
+              "textContent": "={{ $json.ceo }}"
+            },
+            {
+              "key": "전화번호|rich_text",
+              "textContent": "={{ $json.phone }}"
+            },
+            {
+              "key": "주소|rich_text",
+              "textContent": "={{ $json.address }}"
+            },
+            {
+              "key": "회원등급|rich_text",
+              "textContent": "={{ $json.type }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        1504,
+        16
+      ],
+      "id": "6a935267-2e15-4033-8c54-7c8dce872d1a",
+      "name": "Create a database page",
+      "credentials": {
+        "notionApi": {
+          "id": "bmx1d2lLPPkBeYft",
+          "name": "Notion account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "companies",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        832,
+        16
+      ],
+      "id": "2d0c6419-f951-41ae-a1bb-ad62d3a57894",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "dataPropertyName": "companies",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "name",
+              "cssSelector": ".company_title"
+            },
+            {
+              "key": "ceo",
+              "cssSelector": ".info_box:nth-child(1) span:last-child"
+            },
+            {
+              "key": "phone",
+              "cssSelector": ".info_box:nth-child(2) span:last-child"
+            },
+            {
+              "key": "address",
+              "cssSelector": ".info_box:nth-child(3) span:last-child"
+            },
+            {
+              "key": "type",
+              "cssSelector": ".type"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        1056,
+        16
+      ],
+      "id": "aa1cdb8e-5629-4004-937e-a0b8d12557ec",
+      "name": "HTML1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 이 JS 노드는 두 번째 HTML 노드 바로 뒤에 두고,\n// \"Run Once for All Items\" 모드로 설정합니다.\n\nconst seen = new Set();\nconst result = [];\n\nfor (const item of $input.all()) {\n  const name = item.json.name && item.json.name.trim();\n  if (!name) continue;\n\n  if (!seen.has(name)) {\n    seen.add(name);\n    result.push(item);\n  }\n}\n\nreturn result;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        16
+      ],
+      "id": "389639d1-9b59-4499-a42a-2cb0e315b670",
+      "name": "Code in JavaScript1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "HTML1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Create a database page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "221721d7-d70e-46de-8810-891c3f2a6677",
+  "meta": {
+    "instanceId": "df37452c8170ba46bcd0bd45229bb3082b88fbe77398aef13369302538f85ded"
+  },
+  "id": "BFkYXFHojv4zaIX9",
+  "tags": []
+}

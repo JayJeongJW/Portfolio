@@ -1,0 +1,257 @@
+{
+  "name": "서울시 계약마당 메인 워크플로우",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "const pages = [];\nfor (let i = 1895; i <= 2244; i++) {\n  pages.push({ json: { page: i } });\n}\nreturn pages;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "cb4ff0e4-8f98-40aa-b9e6-5b5a7acfd69b",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "options": {
+          "reset": false
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "27369143-0524-4bc4-b7e3-dd399c30b05a",
+      "name": "Loop Over Items",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "MsVRaLx8gwQXxEc8",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/MsVRaLx8gwQXxEc8",
+          "cachedResultName": "서울시 계약마당 서브 워크플로우"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "page": "={{ $json.page }}"
+          },
+          "matchingColumns": [
+            "page"
+          ],
+          "schema": [
+            {
+              "id": "page",
+              "displayName": "page",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        688,
+        -16
+      ],
+      "id": "98c17cc3-2deb-467b-bdc5-804eb86a1d7b",
+      "name": "Call '서울시 계약마당 서브 워크플로우'"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e83271b8-ec01-486f-9b87-d84805f0eeaa",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "content": "1. Trigger (실행 방식)\n\n현재: Manual Trigger (수동 실행)\n\n권장: Schedule Trigger (1일 1회 정기 실행)\n\n이유: 대량 데이터 처리 시 브라우저/PC 종료와 무관하게 클라우드 환경에서 안정적으로 완료 가능",
+        "width": 352,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        112
+      ],
+      "id": "a3e3148d-8611-4791-84cb-826d3ad3b24c",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "2. JS (Code) Node (페이지 제어)\n\n역할: 수집할 페이지 범위 설정 (정적/동적 가능)\n\n이유: HTTP Request 기본 페이지네이션 대비 \n메모리 효율 ↑, 실행 중단 방지 코드 포함\n\n총 페이지 수 변경 시 어디를 수정해야 하는지\n\n부분 재수집 방법\n\n예시 문구\n\n페이지 범위 수정 가이드\n\n예시) 전체 수집 시: for (let i = 1; i <= 2244; i++)\n\n부분 재수집 시:\n\n예시) 100~150 페이지 재수집\n→ for (let i = 100; i <= 150; i++)\n\n총 페이지 수는 서울시 계약마당 기준이며,\n변경 가능성이 있으므로 정기 점검 필요",
+        "height": 480,
+        "width": 336,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        96,
+        -512
+      ],
+      "id": "e9864b9d-a752-4916-a3cc-cfd6cacc8f9b",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "3. Loop Node (분할 수집)\n\n역할: 페이지 단위로 데이터 반복 수집 → 기록\n\n이유: 메모리 과부하 방지, 한 번에 모든 데이터 가져오지 않고 1페이지씩 처리\n\n실행 흐름\n\n→ 메인에서 page 번호 1개 생성\n→ 서브 워크플로우 호출\n→ 서브 완료 후 다음 page 실행\n\n→ 동기 방식(waitForSubWorkflow=true)\n→ 메모리 사용 최소화, 장애 발생 시 원인 페이지 추적 용이",
+        "height": 320,
+        "width": 320,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        320,
+        224
+      ],
+      "id": "8bcd70fa-e9c5-497b-bea6-c84a279f3f97",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "4. Execute Workflow Node (서브 연결)\n\n역할: Sub Workflow 호출 → 데이터 처리 분산\n",
+        "height": 80,
+        "width": 336,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        592,
+        -112
+      ],
+      "id": "c81106cc-b1d0-420e-bd54-d531261fb425",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "무료버전 클라우드 환경\n\n🟢 Part 1. Main Workflow (메인 제어부)\n메인 / 서브 분리 설계 이유\n\n- 대량 페이지 수집 시 무료 n8n 클라우드 메모리/실행 제한 회피\n\n페이지 제어(Loop)와 실제 데이터 수집 로직을 분리하여\n→ 로직 수정 시 영향 범위 최소화\n\n서브 워크플로우를 단독 테스트 가능\n(특정 page만 실행하여 파싱/저장 검증)\n\n향후 동일한 수집 로직을 다른 프로젝트에서도 재사용 가능",
+        "height": 336,
+        "width": 288,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        -272
+      ],
+      "id": "9ed64cb1-02e8-4107-a2ef-72365da25782",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "- 부분 재수집  (반수동 사용 이유)\n급작스러운 실행 중지가 발생하여\n실시간으로 수집 성공 및 실패를 확인 하기 위함.\n\n만약 실행 환경이 좋을 시 리팩토링하여 자동화 개선 필요 요함",
+        "height": 112,
+        "width": 416,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        432,
+        -512
+      ],
+      "id": "f03155e7-b6a1-47cf-bdbe-01ac556e5e43",
+      "name": "Sticky Note5"
+    }
+  ],
+  "pinData": {
+    "When clicking ‘Execute workflow’": [
+      {
+        "json": {},
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Call '서울시 계약마당 서브 워크플로우'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call '서울시 계약마당 서브 워크플로우'": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "ba0f6aaf-ba93-4323-91b2-7854eb7213b6",
+  "meta": {
+    "instanceId": "df37452c8170ba46bcd0bd45229bb3082b88fbe77398aef13369302538f85ded"
+  },
+  "id": "Y1qKsTp5OJ5CimPG",
+  "tags": []
+}

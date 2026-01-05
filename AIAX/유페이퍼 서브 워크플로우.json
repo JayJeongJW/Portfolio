@@ -1,0 +1,351 @@
+{
+  "name": "유페이퍼 서브 워크플로우",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "=https://upaper.kr/ucate/1000018/{{ $node[\"When Executed by Another Workflow\"].json.page }}",
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1
+            }
+          },
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        480,
+        432
+      ],
+      "id": "b90b99b6-5812-4375-9816-4dd29725a08e",
+      "name": "HTTP Request",
+      "retryOnFail": true,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "title",
+              "cssSelector": "span[id*=\"lblCateTitle\"] a",
+              "returnArray": true
+            },
+            {
+              "key": "author",
+              "cssSelector": "span[id*=\"lblCateAuthor\"]",
+              "returnArray": true
+            },
+            {
+              "key": "publisher",
+              "cssSelector": "span[id*=\"lblCatePublisher\"]",
+              "returnArray": true
+            },
+            {
+              "key": "format",
+              "cssSelector": "span[id*=\"lbCateFormat\"]",
+              "returnArray": true
+            },
+            {
+              "key": "price",
+              "cssSelector": "span[id*=\"lblCatePrice\"]",
+              "returnArray": true
+            },
+            {
+              "key": "category",
+              "cssSelector": "h4#MainBody_lblCateList"
+            }
+          ]
+        },
+        "options": {
+          "trimValues": true,
+          "cleanUpText": true
+        }
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        704,
+        432
+      ],
+      "id": "91d444aa-fe47-4694-9ef0-094da2159d70",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst flattened = [];\n\n// 1️⃣ 데이터 Flatten\nfor (const item of items) {\n  const data = item.json;\n  const titles = data.title || [];\n  for (let i = 0; i < titles.length; i++) {\n    flattened.push({\n      json: {\n        도서명: titles[i],\n        저자: data.author?.[i] || '',\n        출판사: data.publisher?.[i] || '',\n        파일형식: data.format?.[i] || '',\n        가격: data.price?.[i] || '',\n        분야: data.category?.split(\".\")[0]?.trim() || '',\n      }\n    });\n  }\n}\n\n// 2️⃣ 유틸 함수\nfunction safe(v) {\n  if (typeof v === 'string') return v;\n  if (v == null) return '';\n  return String(v);\n}\n\nfunction normalizeSeriesKey(title) {\n  const t = safe(title).toLowerCase();\n  if (!t) return '';\n  return t\n    .replace(/\\(.*?\\)/g, '')\n    .replace(/\\[.*?\\]/g, '')\n    .replace(/미리보기|샘플북|통합본/g, '')\n    .replace(/\\b\\d+\\b/g)\n    .replace(/[:\\-]/g, ' ')\n    .replace(/\\s*\\.\\s*.*$/g, '')\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\n\nfunction score(title) {\n  const t = safe(title).toLowerCase();\n  if (t.includes('미리보기') || t.includes('샘플북') || t.includes('통합본')) return 100;\n  if (t.match(/1\\s*권|\\b1\\b|part\\s*1|제1편/)) return 90;\n  return 10;\n}\n\n// 3️⃣ 시리즈 그룹화 & 대표 1권 선택\nconst groups = {};\nfor (const item of flattened) {\n  const key = normalizeSeriesKey(item.json.도서명);\n  if (!groups[key]) groups[key] = [];\n  groups[key].push(item);\n}\n\nconst output = [];\nfor (const key of Object.keys(groups)) {\n  const group = groups[key];\n  let best = group[0];\n  if (group.length > 1) {\n    let bestScore = score(best.json.도서명);\n    for (const item of group.slice(1)) {\n      const s = score(item.json.도서명);\n      if (s > bestScore) {\n        best = item;\n        bestScore = s;\n      }\n    }\n  }\n\n  // 대표 1권만 바로 output\n  output.push({\n    json: {\n      도서명: best.json.도서명,\n      저자: best.json.저자,\n      출판사: best.json.출판사,\n      파일형식: best.json.파일형식,\n      가격: best.json.가격,\n      분야: best.json.분야\n    }\n  });\n}\n\nreturn output;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        928,
+        432
+      ],
+      "id": "fbc2a7a7-aa9b-4e72-9da9-4752d59ef834",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "2dc08a66-306a-8007-9ff4-e24a4ffea303",
+          "mode": "list",
+          "cachedResultName": "유페이퍼 책,출판사 db 목록",
+          "cachedResultUrl": "https://www.notion.so/2dc08a66306a80079ff4e24a4ffea303"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "도서명|title",
+              "title": "={{ $json.도서명 }}"
+            },
+            {
+              "key": "분류|rich_text",
+              "textContent": "={{ $json['분야'] }}"
+            },
+            {
+              "key": "저자|rich_text",
+              "textContent": "={{ $json['저자'] }}"
+            },
+            {
+              "key": "출판사|rich_text",
+              "textContent": "={{ $json['출판사'] }}"
+            },
+            {
+              "key": "파일형식|rich_text",
+              "textContent": "={{ $json['파일형식'] }}"
+            },
+            {
+              "key": "가격|rich_text",
+              "textContent": "={{ $json['가격'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        1152,
+        432
+      ],
+      "id": "07d3aec9-87db-4a6f-8f84-ead5682d048d",
+      "name": "Create a database page",
+      "credentials": {
+        "notionApi": {
+          "id": "bmx1d2lLPPkBeYft",
+          "name": "Notion account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputSource": "jsonExample",
+        "jsonExample": "{\n  \"page\": 1\n}"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        256,
+        432
+      ],
+      "id": "78874df6-05a1-4ee3-867b-44fb5ea4d177",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "content": "- 유페이퍼: https://upaper.kr/ucate/1000014/1과 같이 URL 경로 자체에 페이지 번호가 포함되는 방식입니다.\n이 경우 n8n에서는 Query Parameters 칸에 값을 넣는 대신, URL 입력란에 {{ $json.page }}를 직접 입력하여 URL 주소 자체를 동적으로 생성해야 합니다.\n\n- 1개의 분야 실행 완료시 URL 값 변경https://upaper.kr/ucate/1000014\n→ 숫자 값 변경",
+        "height": 192,
+        "width": 464
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        192,
+        192
+      ],
+      "id": "6a694f02-8a7e-4e7d-af90-787deb333b3b",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "유페이퍼 vs 서울시계약마당\n- 서울시 계약마당 워크플로우는 Edit Fields(Set) 노드를 통해 데이터를 한 번 더 정의해 주었기 때문에 $json 참조가 안정적이었던 반면, \n- 유페이퍼는 트리거 노드에서 HTTP Request 노드로 바로 연결되면서 참조 오류가 발생할 확률이 높았습니다",
+        "height": 144,
+        "width": 384
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        272,
+        624
+      ],
+      "id": "54ec84a4-2a8d-4e02-bfb4-08bcfd3204f6",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "- 현상\n\n같은 시리즈가 다른 페이지에 있으면 Notion에 둘 다 들어감.\n\n같은 페이지 내 중복만 JS 코드/Remove Duplicates로 제거 가능.\n\n- 원인\n\nn8n Cloud: getWorkflowStaticData() 미지원 → 실행 간 상태 기억 불가.\n\nRemove Duplicates 노드 사용 시, 이전 실행과 비교하려 하면 모두 Discarded, kept 없음\n\n전체 페이지를 한 번에 읽으면 메모리 과부하 → 실행 중단 위험.\n\n- 현실적 대안\n\nJS 코드로 시리즈 키 만들고 페이지 내 중복 제거\n\n페이지 단위 실행 + 일부 중복 허용\n\n전체 페이지 대표 1권 관리 불가 → 클라우드 환경 제한",
+        "height": 448,
+        "width": 496
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1376,
+        592
+      ],
+      "id": "30c02718-952a-44ba-be4c-1cdc5fa583d7",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "- 시리즈 키 생성 규칙 (보수적)\n\n숫자, 권, 부, 미리보기, 통합본 제거\n\n영어/한글 혼합 허용\n\n너무 많이 자르지 않음 (과잉 정규화 금지)이 설계의 한계 (명확히 짚고 감)\n\n제목이 완전히 다르면 같은 시리즈로 인식 불가\n\n외전/스핀오프 구분 불가\n\n저자 정보 미사용 (원하면 추가 가능)\n\n- 하지만 지금 데이터 구조에서는 가장 덜 터지는 설계입니다.\n\n- 최종 요약\n\n지금 구조 유지 가능\n\nCode 노드 하나로 해결\n\n수백 개 시리즈 자동으로 1개만 수집 가능\n\n100% 완벽한 자동 분류는 불가능 (정상)",
+        "height": 496,
+        "width": 496
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        880,
+        592
+      ],
+      "id": "bc11263d-729c-47b1-8f3b-da354e21cf20",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "유페이퍼는 URL Path 기반 페이지 구조\n\nQuery Parameters 사용 ❌\nURL 입력란에서 {{ page }} 직접 조합 ⭕\n\n구조 변경 시:\n브라우저 주소창 먼저 확인\n",
+        "width": 304
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        352,
+        32
+      ],
+      "id": "ef47ddcf-b807-4414-b736-62a939124f7f",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "사이트 개편 시 체크 순서\n\n1. 개발자도구에서 selector 재확인\n2. title / author 배열 길이 확인\n3. JS Flatten 로직 정상 여부 확인\n",
+        "height": 128,
+        "width": 256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        656,
+        256
+      ],
+      "id": "490197dc-b6ce-4f28-9d7e-9935ec5e6b38",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "이 JS 노드는 의도적으로 복잡함\n\n목적:\n- 같은 시리즈 여러 권 → 대표 1권만 저장\n\n완벽한 분류 ❌\n현실적인 자동화 ⭕\n\n클라우드 환경 한계로\n페이지 간 완전 중복 제거 불가\n(정상 동작)\n",
+        "height": 240,
+        "width": 304
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        912,
+        144
+      ],
+      "id": "b67d284a-0194-4302-96be-076b46803530",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "중복 데이터 가능성 있음\n\n- 페이지 단위 중복 제거만 수행\n- 전체 시리즈 대표 관리 불가\n\n필요 시:\n저장소(노션/엑셀)에서\n후처리 권장\n",
+        "height": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        192
+      ],
+      "id": "8b235936-3876-4205-8b04-7ccf5fd2153e",
+      "name": "Sticky Note7"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "page": 627
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Create a database page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "07e1c40a-4fe4-4a5c-8105-aa8014c7b806",
+  "meta": {
+    "instanceId": "df37452c8170ba46bcd0bd45229bb3082b88fbe77398aef13369302538f85ded"
+  },
+  "id": "UtLLmXCt3T4uQyBX",
+  "tags": []
+}

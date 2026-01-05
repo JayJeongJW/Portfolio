@@ -1,0 +1,228 @@
+{
+  "name": "test5",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0d3c037d-49cc-450a-bd2e-213663b1f55e",
+              "name": "page",
+              "value": "=1",
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1456,
+        48
+      ],
+      "id": "225be6d9-c9d4-4be4-bc01-6e5a0eae4a15",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "url": "https://koila.or.kr/sub/sub05_06.php",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "boardid",
+              "value": "memassociation"
+            },
+            {
+              "name": "sk"
+            },
+            {
+              "name": "sw"
+            },
+            {
+              "name": "category"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          },
+          "pagination": {
+            "pagination": {
+              "parameters": {
+                "parameters": [
+                  {
+                    "name": "offset",
+                    "value": "={{ $pageCount * 10 }}"
+                  }
+                ]
+              },
+              "limitPagesFetched": true,
+              "maxRequests": 18
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1232,
+        48
+      ],
+      "id": "13b91b13-bf7d-450d-8c9a-54215699a2f4",
+      "name": "HTTP Request",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 3000
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "cells",
+              "cssSelector": ".board-list.pc tbody tr td",
+              "returnValue": "html",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -1008,
+        48
+      ],
+      "id": "14bdb7ee-a855-4dde-abaa-4ca469bdcbd7",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "2d508a66-306a-8058-9222-cb850ad8c710",
+          "mode": "list",
+          "cachedResultName": "한국통합물류",
+          "cachedResultUrl": "https://www.notion.so/2d508a66306a80589222cb850ad8c710"
+        },
+        "title": "=",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "기업명|title",
+              "title": "={{ $json.name }}"
+            },
+            {
+              "key": "대표자|rich_text",
+              "textContent": "={{ $json.ceo }}"
+            },
+            {
+              "key": "사업자번호|rich_text",
+              "textContent": "={{ $json.biz_no }}"
+            },
+            {
+              "key": "주소|rich_text",
+              "textContent": "={{ $json.address }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        -560,
+        48
+      ],
+      "id": "f050cbc4-461c-434a-8ded-a7aa0ce674a1",
+      "name": "Create a database page",
+      "credentials": {
+        "notionApi": {
+          "id": "bmx1d2lLPPkBeYft",
+          "name": "Notion account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 모든 입력 아이템을 가져와 병합\nconst allItems = $items(); // Pagination으로 들어온 모든 아이템\nlet result = [];\n\nallItems.forEach(item => {\n  const cells = item.json.cells; // HTML Extract 결과\n  for (let i = 0; i < cells.length; i += 4) {\n    result.push({\n      name: cells[i].replace(/<!--[\\s\\S]*?-->/g,'').replace(/[\\n\\r\\t]/g,' ').trim(),\n      biz_no: cells[i+1]?.replace(/[\\n\\r\\t]/g,' ').trim(),\n      address: cells[i+2]?.replace(/<!--[\\s\\S]*?-->/g,'').replace(/[\\n\\r\\t]/g,' ').trim(),\n      ceo: cells[i+3]?.replace(/[\\n\\r\\t]/g,' ').trim(),\n    });\n  }\n});\n\nreturn result.map(r => ({ json: r }));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -784,
+        48
+      ],
+      "id": "681efd54-d1a3-4420-8e5e-c6aeeb8fe09b",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Create a database page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "c9365a9b-8cb5-4505-8f9a-fdae685e594c",
+  "meta": {
+    "instanceId": "df37452c8170ba46bcd0bd45229bb3082b88fbe77398aef13369302538f85ded"
+  },
+  "id": "CxiyGIJw3yRqtvhO",
+  "tags": []
+}

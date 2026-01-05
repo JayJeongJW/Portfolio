@@ -1,0 +1,420 @@
+{
+  "name": "서울시 계약마당 서브 워크플로우",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://contract.seoul.go.kr/new1/ppviews/searchCompany.do",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "recordCountPerPage",
+              "value": "10"
+            },
+            {
+              "name": "searchFlag",
+              "value": "2"
+            },
+            {
+              "name": "CER_SEQ",
+              "value": "9"
+            },
+            {
+              "name": "CER_SEQ_2",
+              "value": "9"
+            },
+            {
+              "name": "a_CUS_ADDR1",
+              "value": "={{$json.a_CUS_ADDR1}}"
+            },
+            {
+              "name": "currentPageNo",
+              "value": "={{$json.currentPageNo}}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "Referer",
+              "value": "https://contract.seoul.go.kr/new1/ppviews/searchCompany.do?recordCountPerPage=10&currentPageNo=1&totalPageCount=8118&searchFlag=2&CUS_NM=&CUS_ITM=&CUS_TAXNO=&CER_SEQ=10&CUS_ADDR1=0&CUS_SEQ=&CUS_NM_0=&CUS_ITM_0=&a_CUS_ADDR1=%EC%A0%84%EA%B5%AD&juso=&CER_SEQ_2=10&CUS_TAXNO_2=&CUS_NM_2=&CUS_ITM_2="
+            }
+          ]
+        },
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1
+            }
+          },
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        736,
+        208
+      ],
+      "id": "328fdd5c-7342-461a-8757-82d0ddd86c42",
+      "name": "HTTP Request",
+      "retryOnFail": true,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "업체명",
+              "cssSelector": "table.list-tbl-01 tbody tr:nth-of-type(2n-1) b",
+              "returnArray": true
+            },
+            {
+              "key": "대표품목",
+              "cssSelector": "table.list-tbl-01 tbody tr:nth-of-type(2n) td.daily:first-child",
+              "returnArray": true
+            },
+            {
+              "key": "전화번호",
+              "cssSelector": "table.list-tbl-01 tbody tr:nth-of-type(2n) td.daily:nth-of-type(2)",
+              "returnArray": true
+            },
+            {
+              "key": "주소",
+              "cssSelector": "table.list-tbl-01 tbody tr:nth-of-type(2n) td.daily:nth-of-type(3)",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {
+          "trimValues": true,
+          "cleanUpText": true
+        }
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        960,
+        208
+      ],
+      "id": "8fef67de-48f0-40c7-9b56-c5b0c22ea6e8",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Run Once for All Items\n// 이 JS 노드는 \"아이템 하나당 한 번\"이 아니라\n// HTML Node에서 넘어온 모든 아이템을 한 번에 처리하도록 설정됨\n\n// HTML Node 결과 전체를 배열로 가져옴\n// (보통 HTML Node는 컬럼별 배열 형태의 데이터를 반환함)\nconst items = $input.all();  \n\n// 최종적으로 Notion / Excel 등에 저장할\n// \"정제된 한 행 데이터\"들을 담을 배열\nconst output = [];\n\n// HTML Node 결과는 보통 1개 아이템이지만,\n// 구조 변경 대비를 위해 반복문으로 안전하게 처리\nfor (const item of items) {\n  const inputData = item.json;\n\n  // HTML Node에서 CSS Selector로 추출한 결과는\n  // 각 컬럼이 \"배열(Array)\" 형태로 들어옴\n  // 예: 업체명 = [\"A회사\", \"B회사\", ...]\n  const names = inputData[\"업체명\"] || [];\n  const products = inputData[\"대표품목\"] || [];\n  const phones = inputData[\"전화번호\"] || [];\n  const addresses = inputData[\"주소\"] || [];\n\n  // 업체명 배열 길이를 기준으로 반복\n  // → 한 업체 = 한 줄 데이터 생성\n  for (let i = 0; i < names.length; i++) {\n    output.push({\n      json: {\n        // 업체명: 앞뒤 공백 제거\n        // 값이 없을 경우 빈 문자열 처리 (에러 방지)\n        업체명: names[i] ? names[i].trim() : \"\",\n\n        // 대표품목: \"대표품목 |\" 같은 불필요한 텍스트 제거\n        // 사이트 HTML에 포함된 레이블 정리 목적\n        대표품목: products[i]\n          ? products[i].replace(/^대표품목\\s*\\|\\s*/, \"\").trim()\n          : \"\",\n\n        // 전화번호: \"전화번호 |\" 제거\n        전화번호: phones[i]\n          ? phones[i].replace(/^전화번호\\s*\\|\\s*/, \"\").trim()\n          : \"\",\n\n        // 주소: \"주소 |\" 제거\n        주소: addresses[i]\n          ? addresses[i].replace(/^주소\\s*\\|\\s*/, \"\").trim()\n          : \"\",\n      },\n    });\n  }\n}\n\n// 최종 결과 반환\n// → 한 업체당 1개 아이템 형태로 변환되어\n// → 다음 노드(Notion / Excel 저장)로 전달됨\nreturn output;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1184,
+        208
+      ],
+      "id": "8f151780-53ee-4b22-99da-345fb4b98256",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "eab324b9-6b3d-431e-a671-1f9dba1a65b2",
+              "name": "currentPageNo",
+              "value": "={{ $json.page ? $json.page.toString() : \"1\" }}",
+              "type": "string"
+            },
+            {
+              "id": "85fc961c-cfc1-429d-ad14-30fd0cda4b6f",
+              "name": "a_CUS_ADDR1",
+              "value": "={{ $json[\"a_CUS_ADDR1\"] ? $json[\"a_CUS_ADDR1\"].toString().trim() : \"전국\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        544,
+        208
+      ],
+      "id": "02eb9b05-58e5-4879-a1f8-5d343dcea508",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "inputSource": "jsonExample",
+        "jsonExample": "{\n  \"page\": 1\n}\n"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        368,
+        208
+      ],
+      "id": "daa0f8af-f2e4-4b90-98cd-80cf6fdde0bb",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "2dc08a66-306a-8084-a1ab-f39dfe85eef9",
+          "mode": "list",
+          "cachedResultName": "서울시계약마당 소기업",
+          "cachedResultUrl": "https://www.notion.so/2dc08a66306a8084a1abf39dfe85eef9"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "업체명|title",
+              "title": "={{ $json['업체명'] }}"
+            },
+            {
+              "key": "대표품목|rich_text",
+              "textContent": "={{ $json['대표품목'] }}"
+            },
+            {
+              "key": "전화번호|rich_text",
+              "textContent": "={{ $json['전화번호'] }}"
+            },
+            {
+              "key": "주소|rich_text",
+              "textContent": "={{ $json['주소'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        1408,
+        208
+      ],
+      "id": "da47cf4e-5eff-4049-a853-f16bc5c02e79",
+      "name": "Create a database page",
+      "credentials": {
+        "notionApi": {
+          "id": "bmx1d2lLPPkBeYft",
+          "name": "Notion account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "무료버전 클라우드 환경\n\n🔵 Part 2. Sub Workflow (데이터 수집 및 정제)\n\n서브 워크플로우 책임 범위\n\n입력값: page (Number)\n\n역할:\n\n- 외부 사이트 HTTP 요청\n\n- HTML 파싱\n\n- 데이터 정제\n\n- 최종 저장(Notion/Excel)\n\n❌ 페이지 반복 / 루프 제어는 하지 않음\n(메인 워크플로우 책임)",
+        "height": 416,
+        "width": 320,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -144
+      ],
+      "id": "1aff19e2-c6ec-45fe-94f2-600f7b879dd7",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "1. Set Node (데이터 전처리)\n\n역할: HTTP Request 전 파라미터 정제\n\n참고: 단순 사이트 구조라면 생략 가능, 복잡한 쿼리 대응 시 필요\n",
+        "height": 128,
+        "width": 320,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        416,
+        32
+      ],
+      "id": "2de57345-5f15-4cf1-a343-b08a9a5b9ed7",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "2. HTTP Request Node (데이터 통신)\n\n핵심 설정: Headers → 실제 브라우저 환경과 동일하게 구성\n\n최적화: Batching & Retry on Fail → 무료 클라우드 환경에서 중단 위험 최소화\n\n참고: Response Format = Text\n로 바꾸면, n8n이 응답을 그냥 텍스트로 받아서 지정한 필드에 문자열로 넣어주기 때문에 오류 없이 다룰 수 있음",
+        "height": 256,
+        "width": 272,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        448,
+        384
+      ],
+      "id": "7380515e-1b54-41b2-b4b4-8588e3ca424e",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "3. HTML Node (파싱)\n\n역할: CSS Selector 이용 → 필요한 컬럼 추출\n\n옵션: Trim/Clean → 불필요한 공백/특수문자 제거\n\n참고: Open API 사용 시 생략 가능\n\nCSS Selector 기반 파싱 구조\n\n사이트 개편 시:\n\n- 브라우저 개발자도구로 selector 재확인\n\n- HTML Node selector 수정\n\n- JS Node 배열 길이(names.length 등) 정상 여부 확인",
+        "height": 368,
+        "width": 352,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        832,
+        -192
+      ],
+      "id": "315afaa9-d0aa-422f-8b66-d7dd14a79d49",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "4. JS Node (최종 정제)\n\n역할: HTML 아웃풋 → 배열(Array) 형태 재구성, 최종 데이터 포맷팅\n",
+        "height": 96,
+        "width": 288,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        416
+      ],
+      "id": "3b135c13-4c29-4c7e-ae2b-d99d17610399",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "5. Notion / Excel Node\n\n노션 사용 이유: 다계정 연동 및 Excel 사용 시 충돌 문제 발생 → 임시로 노션으로 처리\n\n권장: Excel / Google Sheets 노드 사용\n\n다른 사용자는 계정 충돌 이슈가 적으므로 웬만하면 엑셀 사용 권장\n\n💡 Tip: 가능하면 Excel/Google Sheets로 전환 → 안정적이고 직관적인 데이터 관리 가능",
+        "height": 240,
+        "width": 352,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1296,
+        -64
+      ],
+      "id": "d68f8e24-8eca-49a5-9bd5-7189136c7eb5",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "- 서울시 계약마당: .../searchCompany.do?currentPageNo=1과 같이 물음표(?) 뒤에 파라미터 이름과 값을 붙이는 방식입니다. 이 방식일 때만 n8n의 Query Parameters 옵션을 사용하여 Name: currentPageNo, Value: 1과 같이 지정하게 됩니다.\n",
+        "height": 112,
+        "width": 368,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        720,
+        384
+      ],
+      "id": "f401a621-6e76-4e9d-a9b1-567bb7cad3db",
+      "name": "Sticky Note6"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "page": 0
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Create a database page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a database page": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "3ad076e6-8b57-476e-a30e-085bae0e878e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "df37452c8170ba46bcd0bd45229bb3082b88fbe77398aef13369302538f85ded"
+  },
+  "id": "MsVRaLx8gwQXxEc8",
+  "tags": []
+}
