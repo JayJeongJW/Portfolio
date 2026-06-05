@@ -12,8 +12,10 @@
 * 프로젝트명: Show My Life
 * 진행 형태: 팀 프로젝트
 * 작업 유형: 게임 기획 / Unity 작업 / 개발자와 협업
-* 정리 문서: Notion
+* 정리 문서: Notion 
+* 상세 링크 : https://www.notion.so/teamsparta/10-Show-My-Life-2182dc3ef5148053846fc52ac447ad3b
 * 상세 링크: https://teamsparta.notion.site/Show-My-Life-2462dc3ef51480edb62ee6ded91f0c70
+  
 
 ## 주요 작업 내용
 
