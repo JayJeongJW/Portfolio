@@ -15,6 +15,7 @@
 * 정리 문서: Notion 
 * 상세 링크 : https://www.notion.so/teamsparta/10-Show-My-Life-2182dc3ef5148053846fc52ac447ad3b
 * 상세 링크: https://teamsparta.notion.site/Show-My-Life-2462dc3ef51480edb62ee6ded91f0c70
+* 기획 문서 링크 : https://www.notion.so/teamsparta/2192dc3ef514808ca8b7dccc05996bae
   
 
 ## 주요 작업 내용
