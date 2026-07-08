@@ -2,7 +2,7 @@
 
 ARC Raiders를 대상으로 작성한 게임 QA 포트폴리오입니다.
 
-본 포트폴리오는 게임을 단순히 소개하는 자료가 아니라, 레이드 플레이 루프를 기준으로 시스템 흐름을 분석하고 테스트케이스와 BTS/Jira 형식 이슈 리포트로 확장한 QA 산출물입니다.
+본 포트폴리오는 게임을 단순히 소개하는 자료가 아니라, 레이드 플레이 루프를 기준으로 시스템 흐름을 분석하고 테스트케이스 및 BTS/Jira 이슈 리포트 형식으로 확장한 QA 산출물입니다.
 
 ---
 
@@ -10,9 +10,17 @@ ARC Raiders를 대상으로 작성한 게임 QA 포트폴리오입니다.
 
 | 구분 | 파일 | 내용 |
 |---|---|---|
-| 시스템 분석서 | [정재우_게임QA포트폴리오_ARC_Raiders_시스템분석서.pdf](./정재우_게임QA포트폴리오_ARC_Raiders_시스템분석서.pdf) | 레이드 플레이 루프, 상태 변화, 결과 반영 구조, 주요 품질 리스크 분석 |
-| 테스트케이스 | [정재우_ARC_Raiders_QA_TC_Portfolio.xlsx](./정재우_ARC_Raiders_QA_TC_Portfolio.xlsx) | 로드아웃, 전리품, 탈출/실패, 그래픽 옵션 등 테스트케이스 정리 |
-| BTS/Jira 이슈 리포트 | [정재우_ARC_Raiders_QA_BTS_Jira_이슈리포트.pdf](./정재우_ARC_Raiders_QA_BTS_Jira_이슈리포트.pdf) | 테스트케이스 중 이슈화 가능한 항목을 BTS/Jira 형식으로 정리 |
+| 시스템 분석서 | [PDF](./정재우_게임QA포트폴리오_ARC_Raiders_시스템분석서.pdf) | 레이드 플레이 루프, 상태 변화, 결과 반영 구조, 주요 품질 리스크 분석 |
+| 테스트케이스 | [XLSX](./정재우_ARC_Raiders_QA_TC_Portfolio.xlsx) | 로드아웃, 전리품, 탈출/실패, 그래픽 옵션 등 테스트케이스 정리 |
+| 이슈 리포트 | [PDF](./정재우_ARC_Raiders_QA_BTS_Jira_이슈리포트.pdf) | 테스트케이스 중 이슈화 가능한 항목을 BTS/Jira 형식으로 정리 |
+
+---
+
+### 파일명
+
+- `정재우_게임QA포트폴리오_ARC_Raiders_시스템분석서.pdf`
+- `정재우_ARC_Raiders_QA_TC_Portfolio.xlsx`
+- `정재우_ARC_Raiders_QA_BTS_Jira_이슈리포트.pdf`
 
 ---
 
