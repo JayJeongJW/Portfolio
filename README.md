@@ -10,27 +10,9 @@
 
 ---
 
-## 대표 포트폴리오
+## QA 포트폴리오
 
-### Game QA Portfolio
-
-- [ARC Raiders QA Portfolio](./QA_Portfolio)
-
-ARC Raiders를 대상으로 작성한 게임 QA 포트폴리오입니다.  
-레이드 플레이 루프 시스템 분석서, 테스트케이스, BTS/Jira 이슈 리포트로 구성되어 있습니다.
-
-구성 파일:
-
-- 시스템 분석서 PDF
-- 테스트케이스 XLSX
-- BTS/Jira 이슈 리포트 PDF
-
-작성 흐름:
-
-1. 게임 시스템 흐름 분석
-2. 테스트케이스 설계
-3. 이슈 후보 선별
-4. BTS/Jira 형식 이슈 리포트 정리
+- [Game QA Portfolio](./QA_Portfolio) — 새 포트폴리오 준비 중
 
 ---
 
