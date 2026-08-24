@@ -4,7 +4,7 @@
 
 ## 산출물
 
-1. [Live 퍼즐 게임분석서 보기](https://jayjeongjw.github.io/Portfolio/QA_Portfolio/Com2uSProBaseball2026/01_GameAnalysis/)
+1. [Live 퍼즐 게임분석서 보기](https://jayjeongjw.github.io/Portfolio/99_Archive/Com2uSProBaseball2026/01_GameAnalysis/)
 2. [QA 테스트케이스](./02_TestCase/컴투스프로야구2026_테스트케이스.xlsx)
 3. [버그리포트](./03_BugReport/컴투스프로야구2026_QA_Jira_이슈리포트_수정.pdf)
 
