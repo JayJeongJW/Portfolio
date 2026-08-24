@@ -18,6 +18,8 @@
 
 - [QA Analysis](./QA_Portfolio/DAVE_THE_DIVER/01_QA_Analysis)
 - [GitHub Pages로 보기](https://jayjeongjw.github.io/Portfolio/QA_Portfolio/DAVE_THE_DIVER/01_QA_Analysis/)
+- [Test Case](./QA_Portfolio/DAVE_THE_DIVER/02_TestCase/DAVE_THE_DIVER_DLC_TestCase.xlsx)
+- [Bug Report](./QA_Portfolio/DAVE_THE_DIVER/03_BugReport/DAVE_THE_DIVER_DLC_BugReport.pdf)
 
 이전 컴투스프로야구2026 QA 포트폴리오는 [Archive](./99_Archive/Com2uSProBaseball2026)에서 확인할 수 있습니다.
 
@@ -39,6 +41,12 @@
 - 게임 플레이 경험을 바탕으로 한 이슈 분석
 - API 테스트 및 자동화 테스트 기초 학습
 - GitHub 기반 산출물 정리
+
+---
+
+## Supporting Documents
+
+- [Game Play History](./Supporting_Documents/Game_Play_History_정재우.xlsx)
 
 ---
 

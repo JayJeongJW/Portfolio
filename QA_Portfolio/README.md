@@ -8,5 +8,7 @@
 
 - [QA Analysis](./DAVE_THE_DIVER/01_QA_Analysis)
 - [GitHub Pages로 보기](https://jayjeongjw.github.io/Portfolio/QA_Portfolio/DAVE_THE_DIVER/01_QA_Analysis/)
+- [Test Case](./DAVE_THE_DIVER/02_TestCase/DAVE_THE_DIVER_DLC_TestCase.xlsx)
+- [Bug Report](./DAVE_THE_DIVER/03_BugReport/DAVE_THE_DIVER_DLC_BugReport.pdf)
 
 이전 QA 포트폴리오는 [Archive](../99_Archive)에서 확인할 수 있습니다.
