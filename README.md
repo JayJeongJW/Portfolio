@@ -12,13 +12,14 @@
 
 ## QA 포트폴리오
 
-### 컴투스프로야구2026 QA Portfolio
+### DAVE THE DIVER QA Portfolio
 
-실제 플레이를 기반으로 게임 시스템을 분석하고, 135건의 테스트케이스를 설계·수행한 QA 포트폴리오입니다.
+공식 패치 이력에서 반복되는 결함 구조를 정리해 현재 테스트 설계와 직접 플레이 검증으로 연결한 QA 포트폴리오입니다.
 
-주요 검증: 보상·재화 정합성 / 중복 입력 / 앱 종료·네트워크 복구 / 실제 결함 확인 및 관리
+- [QA Analysis](./QA_Portfolio/DAVE_THE_DIVER/01_QA_Analysis)
+- [GitHub Pages로 보기](https://jayjeongjw.github.io/Portfolio/QA_Portfolio/DAVE_THE_DIVER/01_QA_Analysis/)
 
-[포트폴리오 보기](./QA_Portfolio/Com2uSProBaseball2026)
+이전 컴투스프로야구2026 QA 포트폴리오는 [Archive](./99_Archive/Com2uSProBaseball2026)에서 확인할 수 있습니다.
 
 ---
 
@@ -64,7 +65,7 @@ n8n을 활용해 기업 정보를 자동 수집하고 JSON 형태로 정리한 �
 
 ### [Archive](./99_Archive)
 
-과거 학습 과정에서 작성한 게임 기획서, 역기획서, BM 분석 실습 자료를 보관하는 폴더입니다.  
+과거 학습 과정에서 작성한 QA 포트폴리오, 게임 기획서, 역기획서, BM 분석 실습 자료를 보관하는 폴더입니다.
 현재 QA 포트폴리오의 메인 산출물은 아니지만, 게임 시스템을 문서로 분석하고 정리했던 초기 학습 기록으로 보관하고 있습니다.
 
 ---

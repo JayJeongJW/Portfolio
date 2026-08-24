@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071f2c">
+  <link rel="icon" href="data:,">
+  <title>정재우 | DAVE THE DIVER QA Portfolio</title>
+  <meta name="description" content="공식 패치 이력의 반복 결함 패턴을 현재 버전 테스트 설계와 실제 플레이 확인으로 연결한 게임 QA 포트폴리오">
+  <link rel="stylesheet" href="css/v2.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">본문으로 바로가기</a>
+  <header class="site-header v2-header">
+    <a class="brand" href="#overview" aria-label="페이지 맨 위로">
+      <img src="assets/brand/dave-logo.png" alt="DAVE THE DIVER">
+      <span>QA RESEARCH</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav"><span>메뉴</span></button>
+    <nav id="primary-nav" aria-label="주요 섹션">
+      <a href="#why-patch-history" data-nav="research">연구 배경</a>
+      <a href="#ai-assisted-workflow" data-nav="ai">AI 활용</a>
+      <a href="#analysis-scope" data-nav="data">데이터</a>
+      <a href="#six-patterns" data-nav="patterns">패턴</a>
+      <a href="#pattern-to-test" data-nav="test-design">테스트 설계</a>
+      <a href="#execute-or-hold" data-nav="decision">실행 판단</a>
+      <a href="#evidence-ts002" data-nav="evidence">증거</a>
+      <a href="#what-we-can-claim" data-nav="conclusion">결과·적용</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <section class="v2-screen v2-hero" id="overview" data-nav-group="overview" data-screen="01" aria-labelledby="v2-hero-title">
+      <div class="v2-hero-media" aria-hidden="true"></div>
+      <div class="v2-shell v2-hero-layout">
+        <div class="v2-hero-copy">
+          <div class="v3-cover-logos" aria-label="DAVE THE DIVER 및 MINTROCKET 공식 로고">
+            <img src="assets/brand/dave-logo.png" alt="DAVE THE DIVER">
+            <span aria-hidden="true"></span>
+            <img src="assets/brand/mintrocket-logo.png" alt="MINTROCKET">
+          </div>
+          <p class="v2-screen-label">01 · QA RESEARCH PORTFOLIO</p>
+          <h1 id="v2-hero-title"><span>FROM PATCH NOTES</span><span>TO TEST EVIDENCE</span></h1>
+          <p class="v2-subtitle">패치 이력에서 테스트 근거까지</p>
+          <p class="v2-lead v6-hero-lead"><span class="v6-lead-line"><span>라이브 서비스에 누적된</span> <span>과거 결함 기록을</span></span><span class="v6-lead-line"><span>현재 테스트 설계의 근거로</span> <span>다시 활용할 수 있는지 확인했습니다.</span></span></p>
+          <p class="v5-hero-support">AI는 기록 구조화·비교와 테스트 관점 확장을 보조하고, 실제 플레이·Evidence 확보·최종 판정은 직접 수행했습니다.</p>
+        </div>
+        <div class="v2-hero-foot">
+          <p>PATCH HISTORY · TEST DESIGN · EVIDENCE REVIEW</p>
+          <p>GAME QA PORTFOLIO · 정재우</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-contents" id="contents" data-nav-group="overview" data-screen="02" aria-labelledby="contents-title">
+      <div class="v2-shell">
+        <header class="v2-title-block v2-title-centered">
+          <p class="v2-screen-label">02 · NAVIGATION</p>
+          <h2 id="contents-title">CONTENTS</h2>
+          <p class="v2-subtitle">분석 흐름 한눈에 보기</p>
+          <p class="v2-intro">이 문서는 과거 결함 기록을 현재 테스트 설계와 실제 검증으로 어떻게 연결했는지를 순서대로 보여줍니다.</p>
+        </header>
+        <ol class="v2-contents-list">
+          <li><a href="#why-patch-history"><span>01</span><strong>연구 배경</strong><em>패치 기록을 왜 테스트 근거로 사용했는가</em></a></li>
+          <li><a href="#ai-assisted-workflow"><span>02</span><strong>AI 활용 및 검증 방식</strong><em>AI를 어떤 환경에서 어떻게 활용했고, 결과를 어떻게 직접 확인했는가</em></a></li>
+          <li><a href="#analysis-scope"><span>03</span><strong>데이터와 범위</strong><em>어떤 공식 자료를 확보했고 어디까지 분석했는가</em></a></li>
+          <li><a href="#record-meaning"><span>04</span><strong>결함 패턴 분석</strong><em>200건에서 어떤 반복 실패 구조를 찾았는가</em></a></li>
+          <li><a href="#pattern-to-test"><span>05</span><strong>테스트 설계</strong><em>반복 패턴을 어떻게 46개 테스트 후보로 확장했는가</em></a></li>
+          <li><a href="#feasibility-criteria"><span>06</span><strong>실행 판단</strong><em>왜 10개를 먼저 검토했고, 왜 5개를 실행했는가</em></a></li>
+          <li><a href="#evidence-ts002"><span>07</span><strong>증거 검증</strong><em>실제 최신 버전에서 무엇을 확인했는가</em></a></li>
+          <li><a href="#what-we-can-claim"><span>08</span><strong>결과와 업무 적용</strong><em>실제 검증 결과와 QA 업무에서의 활용 방향</em></a></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-why v2-dark" id="why-patch-history" data-nav-group="research" data-screen="03" aria-labelledby="why-title">
+      <div class="v2-shell v6-executive-layout">
+        <header class="v2-title-block v6-executive-head">
+          <p class="v2-screen-label">03 · RESEARCH BACKGROUND</p>
+          <h2 id="why-title">과거 결함 이력을 현재 테스트 설계의 입력 자료로 다시 활용했습니다.</h2>
+          <p class="v2-subtitle v6-executive-summary">반복 실패 구조를 현재 테스트 질문으로 바꾸고, 직접 플레이로 검증했습니다.</p>
+        </header>
+        <div class="v6-executive-support">
+          <article><span>01 · 문제 인식</span><h3>수정 기록은 쌓이지만 지나간 이슈 목록으로만 남을 수 있습니다.</h3><p>라이브 서비스에 축적된 과거 수정 기록을 현재 테스트에서 다시 활용할 방법을 확인했습니다.</p></article>
+          <article><span>02 · 확인 방식</span><h3>반복 실패 구조를 현재 테스트 질문으로 바꾸고 직접 확인했습니다.</h3><p>현재 환경에서 판정 가능한 항목은 실제 플레이 결과와 Evidence를 기준으로 검증했습니다.</p></article>
+        </div>
+        <div class="v6-executive-flow" aria-label="이 문서가 보여주는 흐름">
+          <strong>이 문서가 보여주는 흐름</strong>
+          <ol><li>과거 결함 기록</li><li>반복 실패 구조</li><li>현재 테스트 후보</li><li>실행 가능성 검토</li><li>직접 플레이 검증</li></ol>
+        </div>
+        <aside class="v6-interpretation"><strong>해석 기준</strong><p>과거에 있었던 버그가 현재 버전에도 그대로 존재한다고 가정하지 않았습니다.</p></aside>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-flow" id="research-flow" data-nav-group="research" data-screen="04" aria-labelledby="flow-title">
+      <div class="v2-shell">
+        <header class="v2-title-block v2-title-centered">
+          <p class="v2-screen-label">04 · RESEARCH FLOW</p>
+          <h2 id="flow-title">RESEARCH FLOW</h2>
+          <p class="v2-subtitle">패치 기록을 테스트로 바꾸는 과정</p>
+          <p class="v2-intro">과거 기록을 현재 테스트 질문으로 전환하고, 마지막 판정은 실제 플레이 근거로 확인했습니다.</p>
+        </header>
+        <ol class="v2-flow-numbers" aria-label="연구 흐름 핵심 수치">
+          <li><strong>200</strong><span>구조화한 과거<br>결함 기록</span></li>
+          <li><strong>6</strong><span>반복 결함<br>패턴</span></li>
+          <li><strong>46</strong><span>원자적 테스트<br>시나리오 후보</span></li>
+          <li><strong>10</strong><span>실행 가능성<br>우선 검토</span></li>
+          <li><strong>5</strong><span>최신 버전 실제 플레이<br>확인 완료</span></li>
+        </ol>
+        <ol class="v2-flow-steps" aria-label="전체 연구 단계">
+          <li>공식 패치 이력</li><li>결함 기록 구조화</li><li>반복 패턴 도출</li><li>테스트 시나리오 설계</li><li>실행 가능성 검토</li><li>실제 플레이</li><li>플레이 결과 판정</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="v2-screen v3-ai-workflow" id="ai-assisted-workflow" data-nav-group="ai" data-screen="05" aria-labelledby="ai-workflow-title">
+      <div class="v2-shell">
+        <header class="v2-title-block v3-ai-head">
+          <div><p class="v2-screen-label">05 · AI ASSISTED WORKFLOW</p><h2 class="v5-ai-title" id="ai-workflow-title">AI ASSISTED<br>HUMAN VERIFIED</h2><p class="v2-subtitle">AI와 QA 담당자의 역할을 분리한 검증 흐름</p></div>
+          <p class="v2-intro">AI는 많은 기록의 구조화·비교와 테스트 관점 확장을 보조했습니다. 공식 자료 재확인, 실행 가능성 판단, 실제 플레이, Evidence 확보와 최종 판정은 직접 수행했습니다.</p>
+        </header>
+        <div class="v3-ai-environment">
+          <p><strong>작업 환경</strong><span>ChatGPT Plus 개인 구독</span><span>개인 학습·포트폴리오 환경</span></p>
+          <p><strong>판정 원칙</strong><span>AI 자동 게임 실행 없음</span><span>AI 자동 최종 판정 없음</span><span>공식 자료와 실제 플레이에서 확인한 결과를 판정 근거로 사용</span></p>
+        </div>
+        <ol class="v4-ai-process" aria-label="AI 보조와 직접 검증을 포함한 전체 작업 흐름">
+          <li><span>01</span>공식 패치 자료 확보</li><li><span>02</span>AI로 결함 기록 구조화·비교</li><li><span>03</span>반복 패턴 후보 정리</li><li class="is-human"><span>04</span>원문과 자료를 다시 확인하고 잘못된 추론 제거</li><li class="is-human"><span>05</span>검증된 내용만 기준본으로 확정</li><li><span>06</span>현재 시스템 테스트 후보 확장</li><li class="is-human"><span>07</span>실행 가능성 검토</li><li class="is-human"><span>08</span>실제 게임 플레이</li><li class="is-human"><span>09</span>플레이 결과 캡처</li><li class="is-human"><span>10</span>최종 판정</li>
+        </ol>
+        <div class="v3-role-split">
+          <section><p>AI 활용</p><ul><li>공식 패치 자료 조사 보조</li><li>기록 구조화</li><li>기록 비교</li><li>반복 패턴 후보 정리</li><li>테스트 관점 후보 확장</li><li>누락·중복 가능성 점검</li></ul></section>
+          <section><p>직접 확인</p><ul><li>공식 자료 재확인</li><li>잘못된 AI 추론 제거</li><li>PAT 검토</li><li>테스트 후보 검토</li><li>실행 가능성 판단</li><li>실제 플레이</li><li>Evidence 확보</li><li>최종 판정</li></ul></section>
+        </div>
+        <div class="v3-ai-scale" aria-label="AI와 함께 다룬 작업 규모"><span>구조화한 과거 결함 기록 <b>200건</b></span><span>반복 결함 패턴 <b>6개</b></span><span>현재 시스템 테스트 후보 <b>46개</b></span><span>실행 가능성 우선 검토 <b>10개</b></span><span>실제 플레이로 확인한 시나리오 <b>5개</b></span></div>
+        <div class="v3-human-check"><strong>AI가 분석을 보조했지만, 최종 사실과 판정은 직접 확인했습니다.</strong><p>원문과 플레이 결과를 다시 확인한 뒤, 검증된 내용만 기준본에 반영했습니다.</p></div>
+      </div>
+    </section>
+
+    <section class="v2-screen v3-ai-limits v2-dark" id="ai-limits" data-nav-group="ai" data-screen="06" aria-labelledby="ai-limits-title">
+      <div class="v2-shell">
+        <header class="v2-title-block v3-ai-limit-head"><p class="v2-screen-label">06 · AI VALIDATION RULES</p><h2 id="ai-limits-title">AI VALIDATION<br>RULES</h2><p class="v2-subtitle">AI 활용 시 검증 기준</p></header>
+        <div class="v5-ai-rules" aria-label="AI 활용 리스크와 검증 기준">
+          <article><span>AI 활용 리스크</span><h3>자료가 부족하면 추론이 사실처럼 이어질 수 있음</h3><strong>검증 기준</strong><p>공식 원문을 다시 확인하고 근거와 맞지 않는 해석을 제거합니다.</p></article>
+          <article><span>AI 활용 리스크</span><h3>기준이 불명확한 항목을 단정할 수 있음</h3><strong>검증 기준</strong><p>화면과 수치 등 판정 근거를 확보하기 전에는 결론을 보류합니다.</p></article>
+          <article><span>AI 활용 리스크</span><h3>테스트 후보가 과도하게 확장될 수 있음</h3><strong>검증 기준</strong><p>접근 가능성·관찰 가능성·재실행 가능성으로 실제 검증 대상을 필터링합니다.</p></article>
+          <article><span>AI 활용 리스크</span><h3>AI 해석과 실제 게임 동작이 다를 수 있음</h3><strong>검증 기준</strong><p>최종 판정은 공식 자료와 직접 플레이에서 확인한 결과를 기준으로 합니다.</p></article>
+        </div>
+        <aside class="v5-ai-control-note"><strong>판정 통제 원칙</strong><p>AI가 만든 해석은 검토 대상이며 판정 근거가 아닙니다. 공식 원문, 현재 화면, 실제 플레이 결과가 충분하지 않으면 HOLD로 분리했습니다.</p></aside>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-scope" id="analysis-scope" data-nav-group="data" data-screen="07" aria-labelledby="scope-v2-title">
+      <div class="v2-shell v2-media-split">
+        <figure class="v2-full-figure">
+          <img src="assets/official/scope-underwater.webp" alt="어두운 수중 지역을 탐색하는 DAVE THE DIVER 공식 게임 이미지">
+          <figcaption>공식 게임 이미지 · 분석 대상의 게임 맥락</figcaption>
+        </figure>
+        <div class="v2-media-copy">
+          <header class="v2-title-block">
+            <p class="v2-screen-label">07 · ANALYSIS BOUNDARY</p>
+            <h2 id="scope-v2-title">ANALYSIS<br>SCOPE</h2>
+            <p class="v2-subtitle">어디까지 분석했는가</p>
+          </header>
+          <p class="v2-date">2025.08.19 <span aria-hidden="true">—</span> 2026.08.19</p>
+          <p class="v2-intro">이 날짜는 프로젝트 수행 기간이 아니라 <strong>분석 대상으로 삼은 패치 이력의 기간</strong>입니다. 해당 기간의 공식 자료에서 직접 확보한 본문을 근거로 결함 기록을 구조화했습니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-coverage v2-paper" id="source-coverage" data-nav-group="data" data-screen="08" aria-labelledby="coverage-title">
+      <div class="v2-shell">
+        <header class="v2-title-block v2-coverage-head">
+          <div>
+            <p class="v2-screen-label">08 · SOURCE SCOPE</p>
+            <h2 id="coverage-title">SOURCE<br>COVERAGE</h2>
+            <p class="v2-subtitle">공식 자료를 얼마나 확보했는가</p>
+          </div>
+          <p class="v2-intro">분석 기간에 공식 자료 45개를 확인했습니다. 이 가운데 실제 패치 본문까지 확보해 결함 기록 정리에 활용할 수 있었던 자료는 11개였습니다.</p>
+        </header>
+        <div class="v2-coverage-ledger">
+          <div class="v2-coverage-copy">
+            <p>공식 자료 수를 기준으로 한 직접 본문 확보 비율은 <strong>24.4%</strong>입니다. 모든 자료의 본문을 동일하게 확보한 것은 아니므로, 이번 분석은 직접 확인할 수 있었던 범위 안에서 진행했습니다.</p>
+            <p class="v2-small-note">본문 확보 비율 24.4% · 11 / 45</p>
+          </div>
+          <div class="v2-coverage-track" role="img" aria-label="확인한 공식 자료 45개 중 본문까지 확보한 자료 11개">
+            <span style="--coverage: 24.4%"></span>
+          </div>
+          <dl class="v2-ledger-defs">
+            <div><dt>확인한 공식 자료</dt><dd><strong>45개</strong><span>분석 기간에 공식 자료로 확인한 자료 단위</span></dd></div>
+            <div><dt>본문까지 확보한 자료</dt><dd><strong>11개</strong><span>실제 패치 본문을 확인해 결함 기록 정리에 사용할 수 있었던 자료</span></dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-limits-data v2-dark" id="data-limits" data-nav-group="data" data-screen="09" aria-labelledby="data-limits-title">
+      <div class="v2-shell">
+        <header class="v2-title-block v2-limit-title">
+          <p class="v2-screen-label">09 · DATA LIMITS</p>
+          <h2 id="data-limits-title">LIMITS OF<br>THE DATA</h2>
+          <p class="v2-subtitle">이 데이터로 어디까지 말할 수 있는가</p>
+        </header>
+        <div class="v2-limit-grid">
+          <p class="v2-limit-lead">확보한 자료의 범위와 한계를 함께 기록해, 이번 분석 결과를 <strong>어디까지 적용할 수 있는지 구분했습니다.</strong></p>
+          <ul class="v2-statement-list">
+            <li><span>01</span>직접 확보 가능한 PC/Mac 계열 자료에 편향되어 있습니다.</li>
+            <li><span>02</span>전체 플랫폼 결함 이력으로 일반화할 수 없습니다.</li>
+            <li><span>03</span>현재 게임의 전체 품질을 뜻하지 않습니다.</li>
+            <li><span>04</span>현재 버그 발생률을 의미하지 않습니다.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-records" id="record-meaning" data-nav-group="patterns" data-screen="10" aria-labelledby="records-title">
+      <div class="v2-shell">
+        <header class="v2-title-block v2-records-head">
+          <div>
+            <p class="v2-screen-label">10 · STRUCTURED CORPUS</p>
+            <h2 id="records-title">WHAT 200<br>RECORDS MEAN</h2>
+            <p class="v2-subtitle">200건의 구조화 기록은 무엇을 뜻하는가</p>
+          </div>
+          <div class="v2-intro"><p>직접 확보한 공식 패치 본문에서 결함이나 수정 내용을 하나씩 분리해 200건의 과거 결함 기록으로 구조화했습니다.</p><p>각 기록에는 어떤 시스템에서, 어떤 조건에서, 무엇이 잘못됐고, 어떤 수정이 이루어졌는지를 정리했습니다. 이후 기록을 서로 비교해 기능 이름이 달라도 반복되는 실패 구조가 있는지 확인했습니다.</p></div>
+        </header>
+        <div class="v2-record-example" aria-label="결함 기록 비교의 주요 항목">
+          <p class="v2-record-label">결함 기록을 비교할 때 확인한 주요 항목</p>
+          <ol>
+            <li><span>대상 시스템</span><p>어떤 기능에서</p></li>
+            <li><span>발생 조건</span><p>어떤 상황에서</p></li>
+            <li><span>실패 형태</span><p>무엇이 잘못되고</p></li>
+            <li><span>수정 내용</span><p>어떤 수정이 이루어졌는지</p></li>
+          </ol>
+        </div>
+        <aside class="v5-checkpoint-bridge"><span>다음 단계</span><strong>여기까지의 목적은 결함 개수를 세는 것이 아니라, 현재 테스트에 다시 사용할 수 있는 반복 실패 구조를 찾는 것입니다.</strong></aside>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-pattern-method v2-paper" id="records-to-patterns" data-nav-group="patterns" data-screen="11" aria-labelledby="pattern-method-title">
+      <div class="v2-shell v2-method-layout">
+        <div>
+          <header class="v2-title-block">
+            <p class="v2-screen-label">11 · PATTERN METHOD</p>
+            <h2 id="pattern-method-title"><span class="v2-title-line">FROM RECORDS</span><span class="v2-title-line">TO PATTERNS</span></h2>
+            <p class="v2-subtitle">결함 기록에서 반복 구조를 찾는 방법</p>
+          </header>
+          <p class="v2-intro">개별 과거 버그를 그대로 재현하는 것이 아니라, 여러 수정 사례에서 반복되는 실패 구조를 현재 테스트 관점으로 다시 사용할 수 있도록 PAT로 묶었습니다.</p>
+        </div>
+        <div class="v5-pattern-method" aria-label="과거 결함 기록을 같은 필드로 정리한 뒤 반복 결함 패턴 후보를 도출하는 과정">
+          <section class="v5-record-schema">
+            <p>과거 결함 기록을 같은 기준으로 정리</p>
+            <dl><div><dt>01</dt><dd>대상 시스템</dd></div><div><dt>02</dt><dd>발생 조건</dd></div><div><dt>03</dt><dd>실패 형태</dd></div><div><dt>04</dt><dd>수정 내용</dd></div></dl>
+          </section>
+          <ol class="v5-comparison-flow">
+            <li>여러 기록을 서로 비교</li><li>조건과 상태 변화가 비슷한 사례를 묶음</li><li>반복되는 실패 구조 확인</li><li>반복 결함 패턴 후보 도출</li>
+          </ol>
+          <p>기능 이름이 같은지를 기준으로 묶기보다, 어떤 조건에서 어떤 상태가 잘못되는지를 비교했습니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-six-patterns" id="six-patterns" data-nav-group="patterns" data-screen="12" aria-labelledby="six-patterns-title">
+      <div class="v2-shell">
+        <header class="v2-title-block v2-patterns-head">
+          <div>
+            <p class="v2-screen-label">12 · DEFECT VIEWPOINTS</p>
+            <h2 id="six-patterns-title">SIX DEFECT<br>PATTERNS</h2>
+            <p class="v2-subtitle">반복해서 나타난 결함 패턴 6개</p>
+          </div>
+          <p class="v2-intro">6개 PAT는 현재 발생 중인 오류 목록이 아니라, 과거 수정 사례에서 반복된 실패 구조를 현재 시스템의 테스트 관점으로 다시 사용하기 위한 기준입니다. TS-CAT은 그 관점을 현재 게임 시스템에 적용해 만든 개별 테스트 후보입니다.</p>
+        </header>
+        <div class="v2-pattern-map">
+          <section class="v2-pattern-family v2-family-effect">
+            <p>효과 적용과 차단</p>
+            <article><span>PAT-002A</span><h3>유효 대상·상황에서 효과 적용 누락</h3><small><b>관련 과거 수정 사례 5건</b><b>여기서 설계한 테스트 후보 3개</b></small></article>
+            <article><span>PAT-002B</span><h3>면역·방어 차단 규칙 미적용</h3><small><b>관련 과거 수정 사례 5건</b><b>여기서 설계한 테스트 후보 4개</b></small></article>
+          </section>
+          <section class="v2-pattern-family v2-family-state">
+            <p>전환 전후 상태</p>
+            <article><span>PAT-004</span><h3>이전 UI·피드백 상태 잔존</h3><small><b>관련 과거 수정 사례 9건</b><b>여기서 설계한 테스트 후보 8개</b></small></article>
+            <article><span>PAT-005</span><h3>유지되어야 할 상태의 소실·롤백</h3><small><b>관련 과거 수정 사례 8건</b><b>여기서 설계한 테스트 후보 5개</b></small></article>
+          </section>
+          <section class="v2-pattern-family v2-family-progress">
+            <p>진행 갱신과 접근</p>
+            <article><span>PAT-006</span><h3>종속 진행·등록 상태 미갱신</h3><small><b>관련 과거 수정 사례 8건</b><b>여기서 설계한 테스트 후보 14개</b></small></article>
+            <article><span>PAT-007</span><h3>자격과 맞지 않는 UI·기능 노출</h3><small><b>관련 과거 수정 사례 11건</b><b>여기서 설계한 테스트 후보 12개</b></small></article>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-effect-rules v2-dark" id="effect-block-rules" data-nav-group="patterns" data-screen="13" aria-labelledby="effect-title">
+      <div class="v2-shell">
+        <header class="v2-title-block">
+          <p class="v2-screen-label">13 · PATTERN FOCUS</p>
+          <p class="v6-narrative-kicker"><strong>과거 결함 패턴 → 현재 테스트 질문</strong></p>
+          <h2 id="effect-title">EFFECT &amp;<br>BLOCK RULES</h2>
+          <p class="v2-subtitle">효과 적용과 차단 규칙</p>
+        </header>
+        <div class="v2-rule-compare">
+          <article>
+            <p class="v2-code">PAT-002A <small>관련 과거 수정 사례 5건 · 여기서 설계한 테스트 후보 3개</small></p>
+            <h3>적용되어야 할 효과가 빠지는가?</h3>
+            <p>유효한 대상과 상황이 갖춰졌는데도 회복, 강화, 반격 같은 효과가 적용되지 않는 실패 구조입니다.</p>
+            <dl><div><dt>현재 테스트로 바꾼 예</dt><dd>특수 젤리 사용 후 회복 효과가 적용되는가 · Paper 방어 성공 후 반격 피해가 적용되는가</dd></div><div><dt>현재 테스트 질문</dt><dd>조건을 만족했을 때 효과와 수치 변화가 실제 화면에 나타나는가</dd></div></dl>
+          </article>
+          <article>
+            <p class="v2-code">PAT-002B <small>관련 과거 수정 사례 5건 · 여기서 설계한 테스트 후보 4개</small></p>
+            <h3>막혀야 할 효과가 통과하는가?</h3>
+            <p>면역, 방어, 가드처럼 효과를 차단해야 하는 규칙이 적용되지 않아 잘못된 상태가 발생하는 구조입니다.</p>
+            <dl><div><dt>현재 테스트로 바꾼 예</dt><dd>면역 대상에게 차단되어야 할 효과가 정상적으로 차단되는가 · Guard 활성 상태에서 해당 스킬 피해가 정상적으로 차단되는가</dd></div><div><dt>현재 테스트 질문</dt><dd>차단 조건에서 피해·상태 이상·행동 변화가 발생하지 않는가</dd></div></dl>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-transition" id="state-transitions" data-nav-group="patterns" data-screen="14" aria-labelledby="transition-title">
+      <div class="v2-shell">
+        <header class="v2-title-block v2-transition-head">
+          <p class="v2-screen-label">14 · PATTERN FOCUS</p>
+          <p class="v6-narrative-kicker"><strong>과거 결함 패턴 → 현재 테스트 질문</strong></p>
+          <h2 id="transition-title">STATE ACROSS<br>TRANSITIONS</h2>
+          <p class="v2-subtitle">전환 전후 상태 유지</p>
+        </header>
+        <div class="v2-transition-track">
+          <article>
+            <p class="v2-code">PAT-004 <small>관련 과거 수정 사례 9건 · 여기서 설계한 테스트 후보 8개</small></p>
+            <h3>전환 뒤 이전 상태가 남지 않는가?</h3>
+            <p>메뉴·지역·미니게임처럼 플레이 맥락이 바뀌었는데도 이전 상태에서만 필요했던 UI나 피드백이 남는 유형입니다.</p>
+            <div class="v2-state-diagram"><span>이전 화면</span><i aria-hidden="true">→</i><span>맥락 전환</span><i aria-hidden="true">→</i><strong>불필요한 상태 잔존?</strong></div>
+          </article>
+          <article>
+            <p class="v2-code">PAT-005 <small>관련 과거 수정 사례 8건 · 여기서 설계한 테스트 후보 5개</small></p>
+            <h3>유지되어야 할 상태가 보존되는가?</h3>
+            <p>탭이나 지역을 이동한 뒤에도 유지되어야 할 선택, 설정, 진행 상태가 소실되거나 이전 값으로 돌아가는 유형입니다.</p>
+            <div class="v2-state-diagram"><span>상태 확정</span><i aria-hidden="true">→</i><span>맥락 전환</span><i aria-hidden="true">→</i><strong>동일 상태 유지?</strong></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-progression v2-paper" id="progression-access" data-nav-group="patterns" data-screen="15" aria-labelledby="progression-title">
+      <div class="v2-shell v2-progression-layout">
+        <header class="v2-title-block">
+          <p class="v2-screen-label">15 · PATTERN FOCUS</p>
+          <p class="v6-narrative-kicker"><strong>과거 결함 패턴 → 현재 테스트 질문</strong></p>
+          <h2 id="progression-title"><span class="v2-title-line">PROGRESSION</span><span class="v2-title-line">&amp; ACCESS</span></h2>
+          <p class="v2-subtitle">진행 갱신과 접근 조건</p>
+          <p class="v2-intro">이벤트 하나가 끝났을 때 후속 상태가 함께 갱신되는지, 아직 자격이 없는 기능이 미리 노출되지 않는지를 확인하는 관점입니다.</p>
+        </header>
+        <div class="v2-progress-rails">
+          <article><span>PAT-006 <small>관련 과거 수정 사례 8건 · 여기서 설계한 테스트 후보 14개</small></span><h3>완료 뒤 다음 상태가 갱신되는가</h3><p>완료·획득 이벤트 이후 미션, 등록, 레시피, 업적처럼 종속된 진행 상태가 갱신되지 않는 실패를 다룹니다.</p><ol><li>완료 또는 획득</li><li>종속 상태 확인</li><li>진행·등록 반영 판단</li></ol></article>
+          <article><span>PAT-007 <small>관련 과거 수정 사례 11건 · 여기서 설계한 테스트 후보 12개</small></span><h3>현재 자격에 맞는 기능만 보이는가</h3><p>사용 조건을 충족하지 않았거나 현재 맥락과 맞지 않는 메뉴·기능이 노출되고 접근되는 실패를 다룹니다.</p><ol><li>현재 자격 확인</li><li>UI·기능 노출 확인</li><li>접근 제한 판단</li></ol></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-pattern-to-test v2-dark" id="pattern-to-test" data-nav-group="test-design" data-screen="16" aria-labelledby="pattern-test-title">
+      <div class="v2-shell">
+        <header class="v2-title-block v2-title-centered">
+          <p class="v2-screen-label">16 · TEST DESIGN</p>
+          <h2 id="pattern-test-title">FROM PATTERN<br>TO TEST</h2>
+          <p class="v2-subtitle">결함 패턴을 테스트 질문으로 바꾸기</p>
+        </header>
+        <p class="v5-transition-statement">과거에 발생했던 결함을 현재 버그로 가정하지 않았습니다. 과거 실패 구조를 현재 시스템에서 독립적으로 확인할 수 있는 테스트 질문으로 전환했습니다.</p>
+        <div class="v3-pattern-definition">
+          <p><strong>PAT</strong><span>과거 패치 이력에서 확인한 반복 결함 구조</span></p>
+          <i aria-hidden="true">→</i>
+          <p><strong>TS-CAT</strong><span>그 구조를 현재 게임 시스템에 적용해 만든 개별 테스트 시나리오 후보</span></p>
+        </div>
+        <article class="v3-pat-example" aria-labelledby="pat004-example-title">
+          <div class="v3-pat-source"><p class="v2-code">PAT-004 · 관련 과거 수정 사례 9건</p><h3 id="pat004-example-title">전환 후 이전 UI·피드백 상태 잔존</h3><p>과거 패치 기록에서 메뉴·지역·미니게임 전환 뒤 이전 상태의 UI나 피드백이 남는 수정 사례를 확인했습니다.</p></div>
+              <div class="v3-pat-arrow" aria-hidden="true">→</div>
+          <div class="v3-pat-targets"><p>현재 버전에서 같은 실패 구조를 독립적으로 확인할 수 있는 기능을 찾았습니다.</p><ul><li>VIP Cooking Battle 재시도 UI</li><li>Animal Block 결과 UI</li><li>Inventory <code>New</code></li><li>미니맵 아이콘</li><li>수풀 탄약 가이드</li><li>Bombs Away 커서</li><li>먹이주기 이모지</li><li>Region 타이틀</li></ul><strong>PAT-004에서 테스트 후보 8개 설계</strong></div>
+        </article>
+        <div class="v3-mapping-table" role="region" aria-labelledby="mapping-caption" tabindex="0">
+          <p id="mapping-caption">여섯 패턴의 관련 과거 수정 사례와 여기서 설계한 테스트 후보</p>
+          <table>
+            <thead><tr><th scope="col">패턴</th><th scope="col">관련 과거 수정 사례</th><th scope="col">여기서 설계한 테스트 후보</th></tr></thead>
+            <tbody><tr><th scope="row">PAT-002A</th><td>5건</td><td>3개</td></tr><tr><th scope="row">PAT-002B</th><td>5건</td><td>4개</td></tr><tr><th scope="row">PAT-004</th><td>9건</td><td>8개</td></tr><tr><th scope="row">PAT-005</th><td>8건</td><td>5개</td></tr><tr><th scope="row">PAT-006</th><td>8건</td><td>14개</td></tr><tr><th scope="row">PAT-007</th><td>11건</td><td>12개</td></tr></tbody>
+            <tfoot><tr><th scope="row">합계</th><td>관련 과거 수정 사례 46건</td><td>여기서 설계한 원자적 시나리오 후보 46개</td></tr></tfoot>
+          </table>
+          <p>두 합계가 모두 46이지만, 과거 수정 사례와 현재 테스트 후보는 서로 다른 데이터 집합입니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-scenarios" id="atomic-scenarios" data-nav-group="test-design" data-screen="17" aria-labelledby="atomic-title">
+      <div class="v2-shell">
+        <header class="v2-title-block v2-scenarios-head">
+          <div>
+            <p class="v2-screen-label">17 · ATOMIC CATALOGUE</p>
+            <h2 id="atomic-title">46 ATOMIC<br>SCENARIOS</h2>
+            <p class="v2-subtitle">46개의 독립 테스트 시나리오</p>
+          </div>
+          <div class="v2-prose">
+            <p>6개 PAT를 현재 게임 시스템별 테스트 질문으로 확장한 결과 46개의 원자적 테스트 시나리오 후보를 설계했습니다. <strong>46개는 실제 실행 건수가 아니라 테스트 설계 후보의 범위입니다.</strong></p>
+            <p><strong>TS-CAT-021</strong>은 개별 테스트 시나리오가 아닌 설계 범주로 재분류해 원자적 시나리오 집계에서 제외했습니다. 따라서 ID 범위는 001~047이지만 원자적 시나리오는 46개입니다.</p>
+          </div>
+        </header>
+        <div id="scenario-register-mount" class="v2-register-mount scenario-groups">
+          <details class="scenario-group">
+            <summary><span><b>PAT-002A</b>효과 적용 누락</span><strong>3개 시나리오</strong></summary>
+            <div class="scenario-group-table" tabindex="0" role="region" aria-label="PAT-002A 시나리오 표"><table><caption>PAT-002A 시나리오 3개</caption><thead><tr><th scope="col">TS ID</th><th scope="col">대상 시스템·기능</th><th scope="col">시나리오·검증 목적</th><th scope="col">패턴</th><th scope="col">현재 상태</th></tr></thead><tbody>
+              <tr><th scope="row">TS-CAT-001</th><td>Toad Bracelet 독 효과</td><td>유효 대상에 효과가 발동하면 독 상태가 적용되는지 확인</td><td>PAT-002A</td><td><span class="status status-neutral">판정 기준 확인 필요</span></td></tr>
+              <tr class="row-complete"><th scope="row">TS-CAT-002</th><td>Beetle Battle 특수 젤리</td><td>유효 곤충에게 젤리를 사용하면 명시된 효과가 적용되는지 확인</td><td>PAT-002A</td><td><span class="status status-qualified">실제 플레이 확인 완료 — 수치 기준 일부 미확정 상태의 정상 확인</span></td></tr>
+              <tr class="row-complete"><th scope="row">TS-CAT-003</th><td>Beetle Battle Paper 방어</td><td>Paper 방어 성공 시 상대에게 반격 피해가 적용되는지 확인</td><td>PAT-002A</td><td><span class="status status-complete">실제 플레이 확인 완료 — 일반 정상 확인</span></td></tr>
+            </tbody></table></div>
+          </details>
+
+          <details class="scenario-group">
+            <summary><span><b>PAT-002B</b>차단 규칙 미적용</span><strong>4개 시나리오</strong></summary>
+            <div class="scenario-group-table" tabindex="0" role="region" aria-label="PAT-002B 시나리오 표"><table><caption>PAT-002B 시나리오 4개</caption><thead><tr><th scope="col">TS ID</th><th scope="col">대상 시스템·기능</th><th scope="col">시나리오·검증 목적</th><th scope="col">패턴</th><th scope="col">현재 상태</th></tr></thead><tbody>
+              <tr><th scope="row">TS-CAT-004</th><td>보스 Ink Bomb 면역</td><td>면역 대상 보스가 Ink Bomb 효과를 차단하는지 확인</td><td>PAT-002B</td><td><span class="status status-neutral">판정 기준 확인 필요</span></td></tr>
+              <tr><th scope="row">TS-CAT-005</th><td>보스 Shock·Freeze 면역</td><td>면역 대상 보스가 충격·빙결 효과를 차단하는지 확인</td><td>PAT-002B</td><td><span class="status status-neutral">판정 기준 확인 필요</span></td></tr>
+              <tr><th scope="row">TS-CAT-006</th><td>Giant Mud Crab Guard</td><td>Guard 활성 상태에서 해당 스킬 피해가 차단되는지 확인</td><td>PAT-002B</td><td><span class="status status-neutral">판정 기준 확인 필요</span></td></tr>
+              <tr><th scope="row">TS-CAT-007</th><td>Sulong 경직 제외</td><td>적용 제외 상태의 Sulong에게 근접 경직이 발생하지 않는지 확인</td><td>PAT-002B</td><td><span class="status status-neutral">판정 기준 확인 필요</span></td></tr>
+            </tbody></table></div>
+          </details>
+
+          <details class="scenario-group">
+            <summary><span><b>PAT-004</b>전환 후 이전 상태 잔존</span><strong>8개 시나리오</strong></summary>
+            <div class="scenario-group-table" tabindex="0" role="region" aria-label="PAT-004 시나리오 표"><table><caption>PAT-004 시나리오 8개</caption><thead><tr><th scope="col">TS ID</th><th scope="col">대상 시스템·기능</th><th scope="col">시나리오·검증 목적</th><th scope="col">패턴</th><th scope="col">현재 상태</th></tr></thead><tbody>
+              <tr><th scope="row">TS-CAT-008</th><td>VIP Cooking Battle 재시도 UI</td><td>재시도 시 이전 시도의 진행·표시 상태가 초기화되는지 확인</td><td>PAT-004</td><td><span class="status status-neutral">판정 기준 확인 필요</span></td></tr>
+              <tr><th scope="row">TS-CAT-009</th><td>Animal Block 결과 UI</td><td>다음 결과 진입 시 이전 결과의 모션·표시 상태가 남지 않는지 확인</td><td>PAT-004</td><td><span class="status status-neutral">판정 기준 확인 필요</span></td></tr>
+              <tr><th scope="row">TS-CAT-010</th><td>Inventory <code>New</code> 표시</td><td>정식 해제 조건 충족 후 <code>New</code> 표시가 제거되는지 확인</td><td>PAT-004</td><td><span class="status status-neutral">판정 기준 확인 필요</span></td></tr>
+              <tr><th scope="row">TS-CAT-011</th><td>미니맵 아이콘 수명주기</td><td>유효 조건 종료 후 관련 미니맵 아이콘이 제거되는지 확인</td><td>PAT-004</td><td><span class="status status-neutral">실행 조건 확인 필요</span></td></tr>
+              <tr class="row-hold"><th scope="row">TS-CAT-012</th><td>수풀 전용 탄약 가이드</td><td>수풀을 벗어난 뒤 수풀 전용 탄약 가이드가 사라지는지 확인</td><td>PAT-004</td><td><span class="status status-hold">추가 실행 보류</span></td></tr>
+              <tr class="row-hold"><th scope="row">TS-CAT-013</th><td>Bombs Away 커서</td><td>미니게임 종료 후 미니게임 전용 커서가 제거되는지 확인</td><td>PAT-004</td><td><span class="status status-hold">추가 실행 보류</span></td></tr>
+              <tr><th scope="row">TS-CAT-014</th><td>도마뱀 먹이주기 이모지</td><td>먹이주기·장면 전환 뒤 이전 이모지가 남지 않는지 확인</td><td>PAT-004</td><td><span class="status status-neutral">진행 조건 및 일회성 위험</span></td></tr>
+              <tr class="row-complete"><th scope="row">TS-CAT-015</th><td>Region 타이틀 모드</td><td>Region 모드에서 최근 플레이 지역에 맞는 타이틀 화면이 표시되는지 확인</td><td>PAT-004</td><td><span class="status status-complete">실제 플레이 확인 완료 — 일반 정상 확인</span></td></tr>
+            </tbody></table></div>
+          </details>
+
+          <details class="scenario-group">
+            <summary><span><b>PAT-005</b>유지 상태 소실</span><strong>5개 시나리오</strong></summary>
+            <div class="scenario-group-table" tabindex="0" role="region" aria-label="PAT-005 시나리오 표"><table><caption>PAT-005 시나리오 5개</caption><thead><tr><th scope="col">TS ID</th><th scope="col">대상 시스템·기능</th><th scope="col">시나리오·검증 목적</th><th scope="col">패턴</th><th scope="col">현재 상태</th></tr></thead><tbody>
+              <tr><th scope="row">TS-CAT-016</th><td>Bancho Grill 등록 재료</td><td>등록된 메뉴·재료 상태가 재접속 또는 재시작 뒤 유지되는지 확인</td><td>PAT-005</td><td><span class="status status-neutral">판정 기준 확인 필요</span></td></tr>
+              <tr><th scope="row">TS-CAT-017</th><td>출전 곤충 선택 상태</td><td>탭 전환 후 선택한 출전 곤충 상태가 유지되는지 확인</td><td>PAT-005</td><td><span class="status status-neutral">판정 기준 확인 필요</span></td></tr>
+              <tr class="row-complete"><th scope="row">TS-CAT-018</th><td>Beetle Battle 배틀 채집통</td><td>곤충 선택 후 다른 탭을 왕복해도 확정한 선택 상태가 유지되는지 확인</td><td>PAT-005</td><td><span class="status status-complete">실제 플레이 확인 완료 — 일반 정상 확인</span></td></tr>
+              <tr><th scope="row">TS-CAT-019</th><td>세타 숲 도마뱀 미끼</td><td>정상적으로 유지돼야 하는 미끼가 전투 후 임의로 사라지지 않는지 확인</td><td>PAT-005</td><td><span class="status status-neutral">실행 조건 확인 필요</span></td></tr>
+              <tr><th scope="row">TS-CAT-020</th><td>변이 과일 처리 상태</td><td>작물 식재 후 지역을 이동해도 변이 처리 가능 상태가 유지되는지 확인</td><td>PAT-005</td><td><span class="status status-neutral">판정 기준 확인 필요</span></td></tr>
+            </tbody></table></div>
+          </details>
+
+          <details class="scenario-group">
+            <summary><span><b>PAT-006</b>진행 상태 미갱신</span><strong>14개 시나리오</strong></summary>
+            <div class="scenario-group-table" tabindex="0" role="region" aria-label="PAT-006 시나리오 표"><table><caption>PAT-006 시나리오 14개</caption><thead><tr><th scope="col">TS ID</th><th scope="col">대상 시스템·기능</th><th scope="col">시나리오·검증 목적</th><th scope="col">패턴</th><th scope="col">현재 상태</th></tr></thead><tbody>
+              <tr><th scope="row">TS-CAT-022</th><td>Ecowatcher Porbeagle 미션</td><td>조건을 충족한 Porbeagle 이벤트 후 미션 진행 수치가 갱신되는지 확인</td><td>PAT-006</td><td><span class="status status-neutral">실행 조건 확인 필요</span></td></tr>
+              <tr><th scope="row">TS-CAT-023</th><td>Mysterious Garden 미션</td><td>유효한 완료 행동 후 미션 완료 상태가 정상 반영되는지 확인</td><td>PAT-006</td><td><span class="status status-neutral">진행 조건 부족</span></td></tr>
+              <tr><th scope="row">TS-CAT-024</th><td>Operation: Sulong Hunt</td><td>당일 유효 완료 조건 충족 후 미션 완료 상태가 갱신되는지 확인</td><td>PAT-006</td><td><span class="status status-neutral">진행 조건 부족</span></td></tr>
+              <tr><th scope="row">TS-CAT-025</th><td>Basilosaurus 카드 등록</td><td>유효한 카드 획득 후 Marinca 수집 목록의 등록 상태가 갱신되는지 확인</td><td>PAT-006</td><td><span class="status status-neutral">진행 조건 부족</span></td></tr>
+              <tr><th scope="row">TS-CAT-026</th><td>Atlas Beetle 등록</td><td>Atlas Beetle 획득 후 수집함에 등록되는지 확인</td><td>PAT-006</td><td><span class="status status-neutral">진행 조건 부족</span></td></tr>
+              <tr><th scope="row">TS-CAT-027</th><td>보스 재료→레시피 해금</td><td>정확한 조건을 충족한 보스 재료 획득 후 연결된 레시피가 해금되는지 확인</td><td>PAT-006</td><td><span class="status status-neutral">실행 조건 확인 필요</span></td></tr>
+              <tr><th scope="row">TS-CAT-028</th><td>정글 업적 전체 완료 보상</td><td>모든 정글 업적 완료 후 특별 인테리어 보상 상태가 갱신되는지 확인</td><td>PAT-006</td><td><span class="status status-neutral">판정 기준 확인 필요 · 진행 조건 및 일회성 위험</span></td></tr>
+              <tr><th scope="row">TS-CAT-029</th><td>업적 <code>풍뎅이의 왕</code></td><td><code>거대 곤충 두 마리를 잡았다</code> 조건 충족 시 업적이 달성되는지 확인</td><td>PAT-006</td><td><span class="status status-neutral">실행 조건 확인 필요</span></td></tr>
+              <tr><th scope="row">TS-CAT-030</th><td>업적 <code>라플레시아</code></td><td><code>마린카 블룸에서 꽃을 피웠다</code> 조건 충족 시 업적이 달성되는지 확인</td><td>PAT-006</td><td><span class="status status-neutral">실행 조건 확인 필요</span></td></tr>
+              <tr><th scope="row">TS-CAT-031</th><td>주민 최대 호감도</td><td>모든 주민의 호감도를 최대로 올린 뒤 숨겨진 Spirits를 이용할 수 있는지 확인</td><td>PAT-006</td><td><span class="status status-neutral">진행 조건 부족</span></td></tr>
+              <tr><th scope="row">TS-CAT-032</th><td>Cobra 신규 스킬</td><td>모든 엔딩 이벤트 완료 후 Cobra 신규 스킬이 해금되는지 확인</td><td>PAT-006</td><td><span class="status status-neutral">진행 조건 부족</span></td></tr>
+              <tr><th scope="row">TS-CAT-033</th><td>Sulong 클리어 연동</td><td>Sulong 클리어 후 Bull Shark가 출현 가능 상태로 갱신되는지 확인</td><td>PAT-006</td><td><span class="status status-neutral">진행 조건 부족</span></td></tr>
+              <tr><th scope="row">TS-CAT-034</th><td>정글 엔딩 인테리어 보상</td><td>정글 엔딩 후 Blue Hole 복귀 시 정글 테마 인테리어 세트가 지급되는지 확인</td><td>PAT-006</td><td><span class="status status-neutral">진행 조건 부족</span></td></tr>
+              <tr><th scope="row">TS-CAT-035</th><td>정글 엔딩 요리 3종</td><td>정글 엔딩 완료 후 복귀하는 과정에서 요리 3종이 등록·제공되는지 확인</td><td>PAT-006</td><td><span class="status status-neutral">진행 조건 부족</span></td></tr>
+            </tbody></table></div>
+          </details>
+
+          <details class="scenario-group">
+            <summary><span><b>PAT-007</b>잘못된 접근·노출</span><strong>12개 시나리오</strong></summary>
+            <div class="scenario-group-table" tabindex="0" role="region" aria-label="PAT-007 시나리오 표"><table><caption>PAT-007 시나리오 12개</caption><thead><tr><th scope="col">TS ID</th><th scope="col">대상 시스템·기능</th><th scope="col">시나리오·검증 목적</th><th scope="col">패턴</th><th scope="col">현재 상태</th></tr></thead><tbody>
+              <tr class="row-hold"><th scope="row">TS-CAT-036</th><td>언어 설정 화면별 규칙</td><td>타이틀 화면과 게임 플레이 설정에서 언어 변경 가능 여부가 각 화면의 규칙을 따르는지 확인</td><td>PAT-007</td><td><span class="status status-hold">추가 실행 보류</span></td></tr>
+              <tr><th scope="row">TS-CAT-037</th><td>DREDGE 메뉴 접근 제한</td><td>DREDGE DLC가 삭제·부재한 경우 <code>Display Aberrant Menu</code>가 노출되지 않는지 확인</td><td>PAT-007</td><td><span class="status status-neutral">DLC 또는 접근 조건 부족</span></td></tr>
+              <tr><th scope="row">TS-CAT-038</th><td>Bancho Grill 등급 정보</td><td>첫 서비스 이전에는 등급 정보에 접근할 수 없는지 확인</td><td>PAT-007</td><td><span class="status status-neutral">진행 조건 부족</span></td></tr>
+              <tr><th scope="row">TS-CAT-039</th><td>Fishing 카테고리</td><td>Fishing 해금 전 앱·UI에 Fishing 카테고리가 노출되지 않는지 확인</td><td>PAT-007</td><td><span class="status status-neutral">진행 조건 부족</span></td></tr>
+              <tr class="row-complete"><th scope="row">TS-CAT-040</th><td>선물 UI <code>가격순</code> 정렬</td><td>선물 화면에서 <code>Sort by Price/가격순</code> 항목이 노출되지 않는지 확인</td><td>PAT-007</td><td><span class="status status-complete">실제 플레이 확인 완료 — 일반 정상 확인</span></td></tr>
+              <tr><th scope="row">TS-CAT-041</th><td>Midnight Candy 컷신</td><td>컷신으로 다른 기능 입력이 제한되는 동안 스마트폰 접근이 차단되는지 확인</td><td>PAT-007</td><td><span class="status status-neutral">진행 조건 및 일회성 위험</span></td></tr>
+              <tr><th scope="row">TS-CAT-042</th><td>지역별 Auto Run</td><td>Auto Run을 사용할 수 없는 화면·플레이 상태에서 관련 기능·버튼이 노출되지 않는지 확인</td><td>PAT-007</td><td><span class="status status-neutral">판정 기준 확인 필요</span></td></tr>
+              <tr><th scope="row">TS-CAT-043</th><td>일일 과일 바구니 보상</td><td>당일 보상을 이미 받은 뒤 두 번째 보상 접근이 비활성 상태로 유지되는지 확인</td><td>PAT-007</td><td><span class="status status-neutral">현재 일일 상태 의존으로 비선정</span></td></tr>
+              <tr><th scope="row">TS-CAT-044</th><td>In the Jungle 레시피 접근 제한</td><td>DLC 미설치 상태에서 DLC 레시피가 제작 목록에 노출되지 않는지 확인</td><td>PAT-007</td><td><span class="status status-neutral">DLC 또는 접근 조건 부족</span></td></tr>
+              <tr class="row-hold"><th scope="row">TS-CAT-045</th><td>특수 젤리 사용 횟수</td><td>같은 곤충·같은 전투에서 2회 사용 후 세 번째 사용이 거부되는지 확인</td><td>PAT-007</td><td><span class="status status-hold">추가 실행 보류</span></td></tr>
+              <tr class="row-hold"><th scope="row">TS-CAT-046</th><td>비료 제작 재료 사용 가능 여부</td><td>보스 재료가 비료 제작 재료로 선택·사용되지 않는지 확인</td><td>PAT-007</td><td><span class="status status-hold">추가 실행 보류</span></td></tr>
+              <tr><th scope="row">TS-CAT-047</th><td>Adventure Gear 탭 접근 제한</td><td>세타 숲 전투 해금 전 Adventure Gear 탭에 접근할 수 없는지 확인</td><td>PAT-007</td><td><span class="status status-neutral">진행 조건 부족</span></td></tr>
+            </tbody></table></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-feasibility v2-paper" id="feasibility-criteria" data-nav-group="test-design" data-screen="18" aria-labelledby="feasibility-title">
+      <div class="v2-shell">
+        <header class="v2-title-block v2-feasibility-head">
+          <div>
+            <p class="v2-screen-label">18 · EXECUTION FILTER</p>
+            <h2 id="feasibility-title">FEASIBILITY<br>CRITERIA</h2>
+            <p class="v2-subtitle">무엇을 먼저 실행할지 판단한 기준</p>
+          </div>
+          <p class="v2-intro">설계한 모든 후보를 실행하는 것이 아니라, 현재 환경에서 실제 판정 가능한 항목만 검증으로 연결했습니다. 중요도 순위가 아니라 결과를 명확하게 확인할 수 있는지를 기준으로 먼저 살펴봤습니다.</p>
+        </header>
+        <ol class="v2-criteria-list">
+          <li><strong>판정 기준</strong><span>정상과 오류를 구분할 기준이 충분한가</span></li>
+          <li><strong>발생 조건</strong><span>필요한 상태를 만들 조건이 명확한가</span></li>
+          <li><strong>관찰 가능성</strong><span>결과를 실제 화면에서 확인할 수 있는가</span></li>
+          <li><strong>접근 가능성</strong><span>해당 콘텐츠까지 현재 진행 상태로 도달할 수 있는가</span></li>
+          <li><strong>실행 비용</strong><span>추가 자원이나 반복 플레이 비용이 과도하지 않은가</span></li>
+          <li><strong>재실행 가능성</strong><span>다시 실행하거나 초기화할 수 있는가</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-first-ten" id="first-ten" data-nav-group="decision" data-screen="19" aria-labelledby="first-ten-title">
+      <div class="v2-shell v2-first-ten-layout">
+        <header class="v2-title-block">
+          <p class="v2-screen-label">19 · FEASIBILITY REVIEW</p>
+          <h2 id="first-ten-title">FIRST 10<br>TO REVIEW</h2>
+          <p class="v2-subtitle">실행 가능성을 먼저 검토한 10개</p>
+          <p class="v2-intro"><strong>이 10개는 위험도 TOP 10이 아니라 현재 환경에서 실제 결과를 확인할 수 있는지를 먼저 검토한 대상입니다.</strong> 판정 기준의 명확성, 접근 가능성, 관찰 가능성, 추가 자원과 반복 플레이 부담을 함께 고려했습니다. <small>위험도 순위가 아닌 실행 가능성 기준</small></p>
+        </header>
+        <ol class="v2-review-order" aria-label="실행 가능성 우선 검토 순서">
+          <li><strong>TS-CAT-015</strong><span>Region 타이틀 모드</span></li><li><strong>TS-CAT-036</strong><span>언어 설정 화면별 규칙</span></li><li><strong>TS-CAT-018</strong><span>곤충 선택 상태 유지</span></li><li><strong>TS-CAT-040</strong><span>선물 UI 가격순</span></li><li><strong>TS-CAT-012</strong><span>수풀 전용 탄약 가이드</span></li><li><strong>TS-CAT-002</strong><span>Beetle Battle 특수 젤리</span></li><li><strong>TS-CAT-003</strong><span>Beetle Battle Paper 방어</span></li><li><strong>TS-CAT-045</strong><span>특수 젤리 사용 횟수</span></li><li><strong>TS-CAT-013</strong><span>Bombs Away 커서</span></li><li><strong>TS-CAT-046</strong><span>비료 제작 재료 분류</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-execute v2-dark" id="execute-or-hold" data-nav-group="decision" data-screen="20" aria-labelledby="execute-title">
+      <div class="v2-shell">
+        <header class="v2-title-block v2-execute-head">
+          <div>
+            <p class="v2-screen-label">20 · EXECUTION DECISION</p>
+            <h2 id="execute-title">EXECUTE<br>OR HOLD</h2>
+            <p class="v2-subtitle">5개는 실행하고, 5개는 보류했습니다</p>
+          </div>
+          <p class="v2-intro">실제 판정 가능한 5개는 실행하고, 기준·접근·자원 등이 충분하지 않은 5개는 Fail이 아닌 HOLD로 분리했습니다.</p>
+        </header>
+        <div class="v2-decision-columns v3-decision-reasons">
+          <section>
+            <p class="v2-decision-label">실제 플레이</p><h3>실제 플레이로 확인한 5개</h3>
+            <ul>
+              <li><strong>TS-CAT-015</strong><span>별도의 진행 소모 없이 설정과 타이틀 화면을 비교해 결과를 판정할 수 있었습니다.</span></li>
+              <li><strong>TS-CAT-018</strong><span>곤충을 선택하고 다른 탭을 왕복하는 동작만으로 선택 상태 유지 여부를 확인할 수 있었습니다.</span></li>
+              <li><strong>TS-CAT-040</strong><span>선물 정렬 팝업 한 화면에서 가격순 노출 여부를 바로 판독할 수 있었습니다.</span></li>
+              <li><strong>TS-CAT-002</strong><span>Beetle Battle에 접근할 수 있었고 젤리 사용 전후 효과를 화면으로 기록할 수 있었습니다.</span></li>
+              <li><strong>TS-CAT-003</strong><span>Paper 방어 성공 조건과 상대 HP 감소 결과가 명확해 적용 전후를 비교할 수 있었습니다.</span></li>
+            </ul>
+          </section>
+          <section>
+            <p class="v2-decision-label v2-hold-label">보류 (HOLD)</p><h3>추가 조건이 필요한 5개</h3>
+            <ul>
+              <li><strong>TS-CAT-012</strong><span>필요한 탄약 가이드를 현재 버전에서 발생시키는 정확한 조건을 확보하지 못했습니다.</span><small>필요한 발생 조건 미확보</small></li>
+              <li><strong>TS-CAT-013</strong><span>Bombs Away 미니게임에 다시 접근할 수 있는 현재 경로를 확보하지 못했습니다.</span><small>재접근 경로 미확보</small></li>
+              <li><strong>TS-CAT-036</strong><span>공식 판정 기준이 Nintendo Switch 범위여서 PC 결과를 같은 기준으로 판단할 수 없었습니다.</span><small>플랫폼 판정 범위 불일치</small></li>
+              <li><strong>TS-CAT-045</strong><span>추가 사용 횟수 경계를 확인하려면 자원 확보와 반복 파밍이 더 필요했습니다.</span><small>추가 자원 필요</small></li>
+              <li><strong>TS-CAT-046</strong><span>화면에서 선택 가능 여부는 확인했지만, 해당 아이템을 이 테스트에서 전제한 보스 재료로 볼 수 있는 공식 근거를 확인하지 못해 판정을 보류했습니다.</span><small>보스 재료 분류 근거 미확정</small></li>
+            </ul>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-evidence v2-evidence-sequence" id="evidence-ts002" data-nav-group="evidence" data-screen="21" aria-labelledby="ts002-title">
+      <div class="v2-shell">
+        <header class="v2-evidence-head">
+          <div class="v2-title-block"><p class="v2-screen-label">21 · TS-CAT-002</p><p class="v6-evidence-kicker">직접 플레이 결과 · 실제 근거 확인</p><h2 id="ts002-title">BEETLE BATTLE ·<br>REGEN JELLY</h2><p class="v2-subtitle">특수 젤리 효과 검증</p></div>
+          <p class="v2-verdict v2-qualified">수치 기준 일부 미확정 상태의 정상 확인</p>
+        </header>
+        <div class="v2-evidence-brief">
+          <ol><li><strong>검증 질문</strong><span>재생 젤리 사용 뒤 회복 효과가 지속 횟수에 맞춰 적용되는가</span></li><li><strong>확인 조건</strong><span>효과 설명, 사용 직전 상태, 각 턴의 회복 수치와 지속 표시를 함께 기록</span></li><li><strong>실제 관찰</strong><span>세 차례에 걸쳐 +3 회복이 관찰되고 지속 표시가 3 → 2 → 1로 변화</span></li><li><strong>확인한 것</strong><span>젤리 사용 후 회복 효과와 화면의 회복 결과, 지속 상태 변화가 정상적으로 나타남</span></li><li><strong>아직 확정하지 못한 것</strong><span>회복 효과가 적용되는 과정은 확인했지만, 회복량이 어떤 계산 규칙으로 정해지는지는 공식 기준을 충분히 확인하지 못했습니다.</span></li><li><strong>최종 판정</strong><span>수치 기준 일부 미확정 상태의 정상 확인</span></li></ol>
+        </div>
+        <p class="v2-zoom-hint">이미지를 선택하면 원본 크기로 확인할 수 있습니다.</p>
+        <div class="v2-gallery v2-gallery-four">
+          <button type="button" data-lightbox data-caption="TS-CAT-002 · 적용 직전 — 재생 젤리 설명과 대상 상태" aria-label="TS-CAT-002 적용 직전 증거 확대"><img src="assets/evidence/ts002-01.webp" alt="재생 젤리 사용 직전 게임 화면"><span>01 · 적용 직전</span></button>
+          <button type="button" data-lightbox data-caption="TS-CAT-002 · 1회차 — +3 회복, 지속 표시 3" aria-label="TS-CAT-002 1회차 회복 증거 확대"><img src="assets/evidence/ts002-02.webp" alt="재생 젤리 첫 회복 +3과 지속 표시 3이 보이는 화면"><span>02 · +3 / 지속 3</span></button>
+          <button type="button" data-lightbox data-caption="TS-CAT-002 · 2회차 — +3 회복, 지속 표시 2" aria-label="TS-CAT-002 2회차 회복 증거 확대"><img src="assets/evidence/ts002-03.webp" alt="재생 젤리 두 번째 회복 +3과 지속 표시 2가 보이는 화면"><span>03 · +3 / 지속 2</span></button>
+          <button type="button" data-lightbox data-caption="TS-CAT-002 · 3회차 — +3 회복, 지속 표시 1" aria-label="TS-CAT-002 3회차 회복 증거 확대"><img src="assets/evidence/ts002-04.webp" alt="재생 젤리 세 번째 회복 +3과 지속 표시 1이 보이는 화면"><span>04 · +3 / 지속 1</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-evidence v2-paper" id="evidence-ts003" data-nav-group="evidence" data-screen="22" aria-labelledby="ts003-title">
+      <div class="v2-shell">
+        <header class="v2-evidence-head v2-evidence-head-inline"><div class="v2-title-block"><p class="v2-screen-label">22 · TS-CAT-003</p><p class="v6-evidence-kicker">직접 플레이 결과 · 실제 근거 확인</p><h2 id="ts003-title">BEETLE BATTLE ·<br>PAPER GUARD</h2><p class="v2-subtitle">Paper 방어 반격 검증</p></div><div class="v2-evidence-summary"><p>Paper 방어 성공 뒤 반격 피해가 적용되는지 확인했습니다.</p><p class="v2-verdict">일반 정상 확인</p></div></header>
+        <div class="v2-observation-line"><span>Paper 방어 성공</span><i aria-hidden="true">→</i><span>상대 HP 133</span><i aria-hidden="true">→</i><strong>반격 피해 -3 · HP 130</strong></div>
+        <p class="v2-zoom-hint">적용 전과 적용 후 이미지를 선택해 원본으로 비교할 수 있습니다.</p>
+        <div class="v2-before-after">
+          <button type="button" data-lightbox data-caption="TS-CAT-003 · 반격 전 — 상대 HP 133" aria-label="TS-CAT-003 반격 전 증거 확대"><span>BEFORE · 상대 HP 133</span><img src="assets/evidence/ts003-01.webp" alt="Paper 방어 뒤 반격 전 상대 HP 133 화면"></button>
+          <button type="button" data-lightbox data-caption="TS-CAT-003 · 반격 후 — 피해 -3, 상대 HP 130" aria-label="TS-CAT-003 반격 후 증거 확대"><span>AFTER · 피해 -3 / HP 130</span><img src="assets/evidence/ts003-02.webp" alt="Paper 방어 반격 피해 -3 적용 후 상대 HP 130 화면"></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-evidence v2-evidence-flow v2-dark" id="evidence-ts015" data-nav-group="evidence" data-screen="23" aria-labelledby="ts015-title">
+      <div class="v2-shell">
+        <header class="v2-title-block v2-title-centered"><p class="v2-screen-label">23 · TS-CAT-015</p><p class="v6-evidence-kicker">직접 플레이 결과 · 실제 근거 확인</p><h2 id="ts015-title"><span>REGION</span> <span>TITLE MODE</span></h2><p class="v2-subtitle">최근 플레이 지역 타이틀 검증</p><p class="v2-intro">최근 플레이한 지역, 타이틀 모드 설정, 실제 타이틀 결과를 한 흐름으로 대조했습니다.</p><p class="v2-verdict">일반 정상 확인</p></header>
+        <p class="v2-zoom-hint">세 단계 이미지를 선택하면 각각 확대할 수 있습니다.</p>
+        <div class="v2-gallery v2-gallery-three v2-gallery-arrows">
+          <button type="button" data-lightbox data-caption="TS-CAT-015 · 최근 플레이 지역 — 세타 숲" aria-label="TS-CAT-015 최근 플레이 지역 증거 확대"><span>01 · 최근 플레이 지역</span><img src="assets/evidence/ts015-01.webp" alt="최근 플레이 지역 세타 숲 화면"></button>
+          <button type="button" data-lightbox data-caption="TS-CAT-015 · 타이틀 화면 선택 — 지역" aria-label="TS-CAT-015 타이틀 화면 설정 증거 확대"><span>02 · 타이틀 모드 ‘지역’</span><img src="assets/evidence/ts015-02.webp" alt="타이틀 화면 선택을 지역으로 설정한 화면"></button>
+          <button type="button" data-lightbox data-caption="TS-CAT-015 · Jungle 지역 타이틀 화면 표시" aria-label="TS-CAT-015 Jungle 타이틀 결과 증거 확대"><span>03 · 실제 타이틀 결과</span><img src="assets/evidence/ts015-03.webp" alt="Jungle 지역 타이틀 화면"></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-evidence v2-selection" id="evidence-ts018" data-nav-group="evidence" data-screen="24" aria-labelledby="ts018-title">
+      <div class="v2-shell">
+        <header class="v2-title-block"><p class="v2-screen-label">24 · TS-CAT-018</p><p class="v6-evidence-kicker">직접 플레이 결과 · 실제 근거 확인</p><h2 id="ts018-title">SELECTION<br>PERSISTENCE</h2><p class="v2-subtitle">곤충 선택 상태 유지 검증</p><p class="v2-intro">선택 상태를 확정한 뒤 다른 탭으로 이동하고 돌아왔을 때 같은 선택이 유지되는지 확인했습니다.</p><p class="v2-verdict">일반 정상 확인</p></header>
+        <ol class="v2-step-labels"><li>선택</li><li>다른 탭 이동</li><li>복귀 후 선택 유지</li></ol>
+        <p class="v2-zoom-hint">각 단계 이미지를 선택하면 원본으로 확인할 수 있습니다.</p>
+        <div class="v2-gallery v2-gallery-three">
+          <button type="button" data-lightbox data-caption="TS-CAT-018 · 최초 확정 선택 상태" aria-label="TS-CAT-018 최초 선택 증거 확대"><img src="assets/evidence/ts018-01.webp" alt="곤충 배틀 최초 확정 선택 상태 화면"><span>01 · 최초 선택</span></button>
+          <button type="button" data-lightbox data-caption="TS-CAT-018 · 다른 분류 탭 이동" aria-label="TS-CAT-018 다른 탭 이동 증거 확대"><img src="assets/evidence/ts018-02.webp" alt="다른 곤충 분류 탭으로 이동한 화면"><span>02 · 탭 이동</span></button>
+          <button type="button" data-lightbox data-caption="TS-CAT-018 · 복귀 후 동일 선택 유지" aria-label="TS-CAT-018 선택 유지 증거 확대"><img src="assets/evidence/ts018-03.webp" alt="원래 탭 복귀 후 동일 선택 상태가 유지된 화면"><span>03 · 선택 유지</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-evidence v2-gift v2-paper" id="evidence-ts040" data-nav-group="evidence" data-screen="25" aria-labelledby="ts040-title">
+      <div class="v2-shell v2-gift-layout">
+        <div class="v2-gift-copy">
+          <header class="v2-title-block"><p class="v2-screen-label">25 · TS-CAT-040</p><p class="v6-evidence-kicker">직접 플레이 결과 · 실제 근거 확인</p><h2 id="ts040-title">GIFT<br>SORTING</h2><p class="v2-subtitle">선물 UI 가격순 미노출 검증</p></header>
+          <p class="v2-intro">선물 화면의 정렬 팝업에서 제공되는 항목을 직접 확인했습니다. 습득 순과 이름 순은 노출되지만, 가격순 항목은 노출되지 않았습니다.</p>
+          <p class="v2-verdict">일반 정상 확인</p>
+          <p class="v2-zoom-hint">이미지를 선택하면 정렬 항목을 원본 크기로 확인할 수 있습니다.</p>
+        </div>
+        <button class="v2-gift-image" type="button" data-lightbox data-caption="TS-CAT-040 · 선물 화면 정렬 팝업 — 습득 순·이름 순 노출, 가격순 미노출" aria-label="TS-CAT-040 선물 정렬 팝업 증거 확대"><img src="assets/evidence/ts040-01.png" alt="선물 화면 정렬 팝업에 습득 순과 이름 순만 표시된 화면"><span>가격순 미노출 · 확대 보기</span></button>
+      </div>
+    </section>
+
+    <section class="v2-screen v2-conclusion v2-dark" id="what-we-can-claim" data-nav-group="conclusion" data-screen="26" aria-labelledby="claim-title">
+      <div class="v2-shell">
+        <header class="v2-title-block v2-conclusion-head"><p class="v2-screen-label">26 · VERIFIED RESULTS</p><h2 id="claim-title">WHAT WAS<br>VERIFIED</h2><p class="v2-subtitle">실제 검증 결과</p></header>
+        <div class="v2-claim-layout">
+          <div class="v2-claim-summary"><p>직접 실행한 <strong>5개 시나리오에서 현재 오류 후보로 분류한 항목은 0건이었습니다.</strong></p><p>이번에 실행한 5개 시나리오 범위의 결과이며, 게임 전체의 오류 부재나 전체 품질을 의미하지 않습니다. HOLD 5개는 판정 기준·접근·자원 조건을 더 확보한 뒤 추가 검증할 항목으로 남겼습니다.</p></div>
+          <dl class="v2-claim-ledger">
+            <div><dt>최신 버전에서 실제 플레이로 확인한 시나리오</dt><dd>5건</dd></div>
+            <div><dt>일반 정상 확인</dt><dd>4건</dd></div>
+            <div><dt>수치 기준 일부 미확정 상태의 정상 확인</dt><dd>TS-CAT-002 · 1건</dd></div>
+            <div><dt>현재 오류 후보로 분류한 항목</dt><dd>0건</dd></div>
+            <div><dt>보류한 시나리오 (HOLD)</dt><dd>5건</dd></div>
+          </dl>
+        </div>
+        <div class="v2-final-note"><p>이 결과는 직접 실행한 5개 시나리오의 확인 범위입니다.</p></div>
+      </div>
+    </section>
+
+    <section class="v2-screen v5-qa-application" id="qa-application" data-nav-group="conclusion" data-screen="27" aria-labelledby="qa-application-title">
+      <div class="v2-shell v5-application-layout">
+        <header class="v2-title-block"><p class="v2-screen-label">27 · QA APPLICATION</p><h2 id="qa-application-title">QA<br>APPLICATION</h2><p class="v2-subtitle">QA 업무 적용 관점</p></header>
+        <div class="v5-application-copy">
+          <article><span>01</span><h3>과거 수정 이력을 회귀 테스트에 다시 활용</h3><p>업데이트나 회귀 테스트를 준비할 때 과거 수정 이력을 다시 보고, 반복된 결함 유형을 현재 테스트 후보로 정리합니다.</p><ul><li>업데이트 전 수정 이력 재검토</li><li>회귀 테스트 후보 정리</li></ul></article>
+          <article><span>02</span><h3>누적 기록을 구조화·비교</h3><p>기록량이 많을 때는 AI를 활용해 대상 시스템, 발생 조건, 실패 형태를 분류·비교하고, 원문과 맞지 않거나 잘못 연결된 내용은 직접 다시 확인합니다.</p><ul><li>기록 분류·비교 보조</li><li>공식 원문 재확인</li></ul></article>
+          <article><span>03</span><h3>실행 가능성을 판단하고 직접 검증</h3><p>접근 가능성과 판정 기준을 확인한 뒤 직접 실행하고, 실제 플레이 결과와 Evidence를 근거로 최종 판정합니다.</p><ul><li>실행 가능성 검토</li><li>실제 플레이 근거로 판정</li></ul></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="v2-screen v3-thanks v2-dark" id="thank-you" data-nav-group="conclusion" data-screen="28" aria-labelledby="thank-you-title">
+      <div class="v2-shell v3-thanks-inner">
+        <p class="v2-screen-label">28 · END</p>
+        <div class="v3-thanks-logos"><img src="assets/brand/dave-logo.png" alt="DAVE THE DIVER"><span aria-hidden="true"></span><img src="assets/brand/mintrocket-logo.png" alt="MINTROCKET"></div>
+        <p class="v3-thanks-project">DAVE THE DIVER<br>Patch History Based QA Research Portfolio</p>
+        <h2 id="thank-you-title">THANK YOU</h2>
+        <p class="v2-subtitle">감사합니다.</p>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="lightbox" id="evidence-lightbox" aria-labelledby="lightbox-caption">
+    <div class="lightbox-toolbar">
+      <p id="lightbox-counter" aria-live="polite"></p>
+      <button type="button" class="lightbox-close" aria-label="확대 이미지 닫기">닫기 <span aria-hidden="true">×</span></button>
+    </div>
+    <figure>
+      <img id="lightbox-image" alt="">
+      <figcaption id="lightbox-caption"></figcaption>
+    </figure>
+    <div class="lightbox-nav">
+      <button type="button" class="lightbox-prev" aria-label="이전 증거 이미지">← 이전</button>
+      <button type="button" class="lightbox-next" aria-label="다음 증거 이미지">다음 →</button>
+    </div>
+  </dialog>
+
+  <script src="js/script.js" defer></script>
+</body>
+</html>

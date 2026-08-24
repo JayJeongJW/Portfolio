@@ -1,0 +1,162 @@
+@page { size: A4; margin: 14mm; }
+
+* { box-shadow: none !important; text-shadow: none !important; }
+html { font-size: 9.5pt; }
+body { margin: 0; color: #102b35 !important; background: #fff !important; }
+a { color: inherit; text-decoration: none; }
+.skip-link,
+.site-header,
+.lightbox,
+.v2-screen::after { display: none !important; }
+.v2-shell { width: 100% !important; max-width: none !important; }
+
+.v2-screen {
+  display: block !important;
+  min-height: 0 !important;
+  padding: 12mm 0 !important;
+  overflow: visible !important;
+  color: #102b35 !important;
+  background: #fff !important;
+  break-after: page;
+}
+
+.v3-thanks { break-after: auto; }
+.v2-screen-label { color: #007a77 !important; }
+.v2-title-block h2,
+.v2-evidence-head .v2-title-block h2,
+.v2-gift .v2-title-block h2,
+.v3-thanks h2 { color: #102b35 !important; font-size: 27pt !important; }
+.v2-subtitle { color: #7a5f00 !important; font-size: 13pt !important; }
+.v2-intro,
+.v2-lead,
+.v2-prose,
+.v2-prose-large,
+.v2-dark .v2-intro,
+.v2-dark .v2-prose,
+.v2-dark .v2-prose-large { color: #48616a !important; }
+
+.v2-hero-media { display: none !important; }
+.v2-hero-layout { min-height: 0 !important; padding: 18mm 0 !important; }
+.v2-hero h1 { max-width: none !important; color: #102b35 !important; font-size: 38pt !important; }
+.v2-hero-foot { color: #48616a !important; border-color: #9aa7aa !important; }
+
+.v2-split,
+.v2-media-split,
+.v2-method-layout,
+.v2-progression-layout,
+.v2-first-ten-layout,
+.v2-gift-layout,
+.v2-claim-layout,
+.v3-ai-head,
+.v5-application-layout { grid-template-columns: 1fr 1fr !important; gap: 8mm !important; }
+.v6-executive-support { grid-template-columns: 1fr 1fr !important; }
+
+.v2-flow-numbers { padding: 5mm 0 !important; }
+.v2-flow-numbers strong { font-size: 24pt !important; }
+.v2-flow-numbers li:not(:last-child)::after { display: none !important; }
+.v2-full-figure img,
+.v2-gift-image img { min-height: 0 !important; max-height: 70mm !important; object-fit: contain !important; }
+.v2-full-figure::before { display: none !important; }
+
+.v2-coverage-head,
+.v2-records-head,
+.v2-patterns-head,
+.v2-scenarios-head,
+.v2-feasibility-head,
+.v2-execute-head { grid-template-columns: 1fr 1fr !important; gap: 8mm !important; }
+.v2-limit-grid { grid-template-columns: 1fr 1fr !important; gap: 8mm !important; }
+.v2-statement-list li,
+.v2-limit-lead,
+.v2-rule-compare > article > p:not(.v2-code),
+.v2-rule-compare dd,
+.v2-claim-summary,
+.v2-claim-summary p + p,
+.v2-claim-ledger dt,
+.v5-ai-rules p { color: #48616a !important; }
+
+.v3-pattern-definition,
+.v3-pat-example { color: #102b35 !important; border-color: #9aa7aa !important; }
+.v5-record-schema > p,
+.v5-comparison-flow li:last-child,
+.v4-ai-process .is-human,
+.v6-executive-support article,
+.v5-ai-rules article { color: #102b35 !important; background: #fff !important; }
+.v3-pattern-definition span,
+.v3-pat-source > p:last-child,
+.v3-pat-targets > p,
+.v3-pat-targets li { color: #48616a !important; }
+.v3-mapping-table { overflow: visible !important; border-color: #9aa7aa !important; }
+.v3-mapping-table th,
+.v3-mapping-table td,
+.v3-mapping-table > p { color: #102b35 !important; border-color: #9aa7aa !important; }
+
+.scenario-group { break-inside: auto; }
+.scenario-group summary { display: none !important; }
+.scenario-group-table { display: block !important; overflow: visible !important; }
+.scenario-group table { display: table !important; min-width: 0 !important; font-size: 6.2pt !important; }
+.scenario-group thead { display: table-header-group; }
+.scenario-group tbody { display: table-row-group !important; }
+.scenario-group tr { display: table-row !important; }
+.scenario-group thead th { color: #102b35 !important; background: #dfe8e5 !important; }
+.scenario-group tr { break-inside: avoid; }
+.scenario-group th,
+.scenario-group td { display: table-cell !important; padding: 1.6mm !important; }
+.scenario-group td::before { content: none !important; }
+
+.v2-decision-columns,
+.v2-decision-columns section,
+.v5-ai-rules,
+.v5-ai-control-note { color: #102b35 !important; background: #fff !important; border-color: #9aa7aa !important; }
+.v3-decision-reasons li span,
+.v3-decision-reasons li small { color: #48616a !important; }
+
+.v2-evidence-head { grid-template-columns: 1fr auto !important; }
+.v2-evidence-brief ol { grid-template-columns: repeat(3, 1fr) !important; }
+.v2-gallery-four { grid-template-columns: repeat(2, 1fr) !important; }
+.v2-gallery-three { grid-template-columns: repeat(3, 1fr) !important; }
+.v2-gallery button,
+.v2-before-after button,
+.v2-gift-image { color: #102b35 !important; background: #fff !important; border: 1px solid #9aa7aa !important; break-inside: avoid; }
+.v2-gallery button::after,
+.v2-before-after button::after,
+.v2-gift-image::after { display: none !important; }
+.v2-gallery button > span,
+.v2-before-after button > span,
+.v2-gift-image > span { position: static !important; display: block; color: #102b35 !important; background: #fff !important; }
+.v2-gallery img,
+.v2-before-after img { max-height: 62mm !important; object-fit: contain !important; }
+.v2-verdict { color: #102b35 !important; background: #fff !important; border: 1px solid #9aa7aa !important; }
+
+.v3-ai-environment,
+.v4-ai-process,
+.v3-role-split,
+.v3-ai-scale,
+.v3-human-check,
+.v5-ai-rules,
+.v5-ai-control-note,
+.v6-executive-support,
+.v6-executive-support article,
+.v6-executive-flow,
+.v6-interpretation,
+.v5-application-copy,
+.v5-application-copy article { border-color: #9aa7aa !important; }
+.v6-narrative-kicker,
+.v6-narrative-kicker strong,
+.v6-evidence-kicker,
+.v5-checkpoint-bridge span { color: #007a77 !important; background: #fff !important; }
+.v5-checkpoint-bridge strong,
+.v5-transition-statement,
+.v5-ai-control-note strong,
+.v6-executive-head h2,
+.v6-executive-support h3,
+.v6-executive-flow li,
+.v6-interpretation p { color: #102b35 !important; }
+.v3-thanks-logos img:first-child { width: 28mm !important; }
+.v3-thanks-logos img:last-child { width: 40mm !important; }
+
+figure,
+article,
+aside,
+table,
+.v2-claim-ledger,
+.v3-human-check { break-inside: avoid; }
