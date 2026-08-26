@@ -48,7 +48,7 @@
         </div>
         <div class="v2-hero-foot">
           <p>PATCH HISTORY · TEST DESIGN · EVIDENCE REVIEW</p>
-          <p>GAME QA PORTFOLIO · 정재우</p>
+          <p>GAME QA PORTFOLIO · <strong class="v8-hero-name">정재우</strong></p>
         </div>
       </div>
     </section>
@@ -69,7 +69,7 @@
           <li><a href="#pattern-to-test"><span>05</span><strong>테스트 설계</strong><em>반복 패턴을 어떻게 46개 테스트 후보로 확장했는가</em></a></li>
           <li><a href="#feasibility-criteria"><span>06</span><strong>실행 판단</strong><em>왜 10개를 먼저 검토했고, 왜 5개를 실행했는가</em></a></li>
           <li><a href="#evidence-ts002"><span>07</span><strong>증거 검증</strong><em>실제 최신 버전에서 무엇을 확인했는가</em></a></li>
-          <li><a href="#what-we-can-claim"><span>08</span><strong>결과와 업무 적용</strong><em>실제 검증 결과와 QA 업무에서의 활용 방향</em></a></li>
+          <li><a href="#what-we-can-claim"><span>08</span><strong>검증 결과와 다음 단계</strong><em>실제 검증 결과와 QA 업무에서의 활용 방향</em></a></li>
         </ol>
       </div>
     </section>
@@ -640,11 +640,22 @@
 
     <section class="v2-screen v5-qa-application" id="qa-application" data-nav-group="conclusion" data-screen="27" aria-labelledby="qa-application-title">
       <div class="v2-shell v5-application-layout">
-        <header class="v2-title-block"><p class="v2-screen-label">27 · QA APPLICATION</p><h2 id="qa-application-title">QA<br>APPLICATION</h2><p class="v2-subtitle">QA 업무 적용 관점</p></header>
-        <div class="v5-application-copy">
-          <article><span>01</span><h3>과거 수정 이력을 회귀 테스트에 다시 활용</h3><p>업데이트나 회귀 테스트를 준비할 때 과거 수정 이력을 다시 보고, 반복된 결함 유형을 현재 테스트 후보로 정리합니다.</p><ul><li>업데이트 전 수정 이력 재검토</li><li>회귀 테스트 후보 정리</li></ul></article>
-          <article><span>02</span><h3>누적 기록을 구조화·비교</h3><p>기록량이 많을 때는 AI를 활용해 대상 시스템, 발생 조건, 실패 형태를 분류·비교하고, 원문과 맞지 않거나 잘못 연결된 내용은 직접 다시 확인합니다.</p><ul><li>기록 분류·비교 보조</li><li>공식 원문 재확인</li></ul></article>
-          <article><span>03</span><h3>실행 가능성을 판단하고 직접 검증</h3><p>접근 가능성과 판정 기준을 확인한 뒤 직접 실행하고, 실제 플레이 결과와 Evidence를 근거로 최종 판정합니다.</p><ul><li>실행 가능성 검토</li><li>실제 플레이 근거로 판정</li></ul></article>
+        <header class="v2-title-block"><p class="v2-screen-label">27 · FOR THE NEXT TEST</p><h2 id="qa-application-title">FOR THE<br>NEXT TEST</h2><p class="v8-application-subtitle">AI를 테스트 업무에 활용해볼 지점</p></header>
+        <div class="v5-application-copy v8-application-copy">
+          <p class="v8-application-intro">이번 분석에서는 과거 패치 이력에서 반복되는 결함 구조를 찾아 현재 테스트 질문으로 연결했습니다. 다음에는 패치 기록뿐 아니라 실제 테스트 결과, 발견한 결함, 재현 조건까지 함께 쌓아보려 합니다. 새로운 변경이 들어왔을 때 관련 과거 사례를 먼저 찾고, 추가로 확인할 조건을 넓히는 데 AI를 활용해보고 싶습니다.</p>
+          <ol class="v8-next-flow" aria-label="누적된 기록을 다음 테스트로 연결하는 흐름">
+            <li><span class="v8-keep">패치 이력</span><span aria-hidden="true">·</span><span class="v8-keep">테스트 결과</span><span aria-hidden="true">·</span><span class="v8-keep">결함 기록</span></li>
+            <li><span class="v8-keep">관련 과거 사례</span> 찾기</li>
+            <li><span class="v8-keep">추가로 확인할 조건</span> 찾기</li>
+            <li><span class="v8-keep">QA 검토</span> · <span class="v8-keep">직접 확인</span></li>
+            <li><span class="v8-keep">결과 다시 축적</span></li>
+          </ol>
+          <div class="v8-application-details">
+            <section aria-labelledby="application-rag-title"><h3 id="application-rag-title">쌓인 기록에서 관련 사례 찾기</h3><p>테스트 결과와 결함이 쌓이면 새로운 변경이 들어올 때마다 과거 자료를 처음부터 다시 찾기보다, 현재 변경과 관련된 기록을 먼저 찾아볼 수 있습니다. <span class="v8-keep">RAG를 활용해 누적된 기록</span>을 <span class="v8-keep">검색·참조</span>할 수 있게 구성하고, 필요한 순간에 <span class="v8-keep">LLM이 관련 사례</span>를 함께 비교하도록 해보고 싶습니다.</p></section>
+            <section aria-labelledby="application-adhoc-title"><h3 id="application-adhoc-title">과거 사례에서 추가로 확인할 조건 찾기</h3><p>검색된 사례의 반복 실패 조건은 이번 변경에서 추가로 확인할 조건을 찾는 데 활용할 수 있습니다. 개인의 경험에만 의존하기보다 누적된 결함을 오류 추정의 근거로 함께 참고하고, 실제 관련성이 있다고 판단된 조건은 직접 플레이로 추가 확인하는 방식입니다.</p><p class="v8-adhoc-caption">오류 추정 → <span class="v8-keep">Ad hoc 테스트</span>로 추가 확인</p></section>
+          </div>
+          <p class="v8-reuse-note">과거 결함을 매번 처음부터 다시 찾는 시간을 줄이고, 한 번 확인한 테스트 경험을 이후의 판단과 검증에 다시 활용할 수 있는 흐름을 만들어보고 싶습니다.</p>
+          <p class="v8-application-boundary">AI는 관련 사례와 추가 확인 후보를 찾는 데 활용하고, 실제로 테스트할지와 최종 판정은 직접 확인한 결과를 기준으로 판단합니다.</p>
         </div>
       </div>
     </section>
@@ -654,6 +665,7 @@
         <p class="v2-screen-label">28 · END</p>
         <div class="v3-thanks-logos"><img src="assets/brand/dave-logo.png" alt="DAVE THE DIVER"><span aria-hidden="true"></span><img src="assets/brand/mintrocket-logo.png" alt="MINTROCKET"></div>
         <p class="v3-thanks-project">DAVE THE DIVER<br>Patch History Based QA Research Portfolio</p>
+        <p class="v8-thanks-contact"><strong>정재우</strong><a href="mailto:p1fixer2@gmail.com">p1fixer2@gmail.com</a></p>
         <h2 id="thank-you-title">THANK YOU</h2>
         <p class="v2-subtitle">감사합니다.</p>
       </div>
