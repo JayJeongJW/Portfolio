@@ -39,6 +39,15 @@ Live 퍼즐의 카드 사용 가치와 보상 순환 구조를 분석하고, 직
 - [테스트케이스](./QA_Portfolio/DAVE_THE_DIVER/02_TestCase/DAVE_THE_DIVER_DLC_TestCase.xlsx)
 - [버그리포트](./QA_Portfolio/DAVE_THE_DIVER/03_BugReport/DAVE_THE_DIVER_DLC_BugReport.pdf)
 
+### 붉은사막
+
+붉은사막의 전투 기술 성장 구조 분석, 테스트케이스와 Jira 형식의 버그리포트입니다.
+
+- [자료 개요와 검증 범위](./QA_Portfolio/PearlAbyss_CrimsonDesert_QA/README.md)
+- [전투 기술 성장 구조 분석서](./QA_Portfolio/PearlAbyss_CrimsonDesert_QA/01_정재우_붉은사막_전투기술성장구조_분석서.pdf)
+- [테스트케이스](./QA_Portfolio/PearlAbyss_CrimsonDesert_QA/02_정재우_붉은사막_QA_테스트케이스.xlsx)
+- [버그리포트](./QA_Portfolio/PearlAbyss_CrimsonDesert_QA/03_정재우_붉은사막_Jira_버그리포트.pdf)
+
 ## 자동화·도구 활용
 
 - **n8n 업무 자동화:** 기업정보 수집에 활용한 메인·서브 워크플로우 JSON을 보관하고 있습니다. [구성과 실행 준비 사항](./AIAX/README.md)
