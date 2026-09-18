@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>컴투스프로야구2026 Live 퍼즐 — 카드 사용 가치와 보상 순환 구조 분석</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div id="topbar">
+  <div class="topbar-left">
+    <span id="activeChapter"></span>
+    <span id="activeLabel"></span>
+  </div>
+  <div id="activeCounter">1 / 20</div>
+</div>
+
+<div id="navbar">
+  <div class="progress-track"><div id="progressBar"></div></div>
+  <div class="navbar-row">
+    <a href="#s1" class="nav-arrow" id="prevBtn">‹</a>
+    <div class="navpill-scroll" id="navpillScroll">
+      <a href="#s1" class="navpill" data-page="1">1</a>
+      <a href="#s2" class="navpill" data-page="2">2</a>
+      <a href="#s3" class="navpill" data-page="3">3</a>
+      <a href="#s4" class="navpill" data-page="4">4</a>
+      <a href="#s5" class="navpill" data-page="5">5</a>
+      <div class="nav-divider"></div>
+      <a href="#s6" class="navpill" data-page="6">6</a>
+      <a href="#s7" class="navpill" data-page="7">7</a>
+      <a href="#s8" class="navpill" data-page="8">8</a>
+      <a href="#s9" class="navpill" data-page="9">9</a>
+      <a href="#s10" class="navpill" data-page="10">10</a>
+      <a href="#s11" class="navpill" data-page="11">11</a>
+      <div class="nav-divider"></div>
+      <a href="#s12" class="navpill" data-page="12">12</a>
+      <a href="#s13" class="navpill" data-page="13">13</a>
+      <a href="#s14" class="navpill" data-page="14">14</a>
+      <a href="#s15" class="navpill" data-page="15">15</a>
+      <div class="nav-divider"></div>
+      <a href="#s16" class="navpill" data-page="16">16</a>
+      <a href="#s17" class="navpill" data-page="17">17</a>
+      <a href="#s18" class="navpill" data-page="18">18</a>
+      <a href="#s19" class="navpill" data-page="19">19</a>
+      <div class="nav-divider"></div>
+      <a href="#s20" class="navpill" data-page="20">20</a>
+    </div>
+    <a href="#s20" class="nav-arrow" id="nextBtn">›</a>
+  </div>
+</div>
+
+<div id="lightbox-overlay">
+  <img id="lightbox-img" src="" alt="확대 이미지">
+</div>
+
+<div id="page-content">
+<section id="s1" class="portfolio-section" data-secid="1" style="padding:64px 0 72px;background:#fff;">
+  <div class="section-inner">
+  <div class="eyebrow">게임 QA 지원 포트폴리오</div>
+  <h1 class="hero-title">컴투스프로야구2026 Live 퍼즐 분석</h1>
+  <p class="lead">Live 카드의 보존·특훈·퍼즐 전환 선택과 QA 테스트 전략</p>
+  <img src="assets/images/B04.png" alt="Daily 보드 4장 배치 완료 화면" style="width:100%;max-width:440px;height:auto;border-radius:10px;border:1px solid #E4E7EB;display:block;margin-bottom:10px;">
+  <div class="caption" style="margin-bottom:32px;">Daily 보드의 조건에 맞춰 Live 카드 4장을 배치한 상태</div>
+  <div class="chip-row" style="margin-bottom:28px;">
+    <div class="chip">게임명 · 컴투스프로야구2026</div>
+    <div class="chip">분석 콘텐츠 · Live 퍼즐</div>
+    <div class="chip">지원 직무 · 게임 QA</div>
+    <div class="chip">작성자 · 정재우</div>
+  </div>
+  <div style="border-top:1px solid #E4E7EB;padding-top:20px;">
+    <div class="statement">어떤 카드를 남기고, 어떤 카드를 다른 성장 자원으로 바꿀 것인가.</div>
+  </div>
+  </div>
+</section>
+
+<section id="s2" class="portfolio-section" data-secid="2" style="padding:72px 0;background:#F6F7F8;border-top:1px solid #E4E7EB;">
+  <div class="section-inner">
+  <div class="eyebrow">목차</div>
+  <div class="toc-grid2">
+    <div class="toc-chapter">
+      <div class="toc-chapter-head">Ⅰ. 분석 배경과 결론</div>
+      <div class="toc-pagelist">
+        <a class="toc-pagerow" href="#s3" data-go="3"><span class="num">03</span><span>Live 퍼즐 개요</span><span class="arrow">→</span></a>
+        <a class="toc-pagerow" href="#s4" data-go="4"><span class="num">04</span><span>분석 대상 선정 이유</span><span class="arrow">→</span></a>
+        <a class="toc-pagerow" href="#s5" data-go="5"><span class="num">05</span><span>핵심 결론</span><span class="arrow">→</span></a>
+      </div>
+    </div>
+    <div class="toc-chapter">
+      <div class="toc-chapter-head">Ⅱ. 콘텐츠 구조 분석</div>
+      <div class="toc-pagelist">
+        <a class="toc-pagerow" href="#s6" data-go="6"><span class="num">06</span><span>이용 흐름</span><span class="arrow">→</span></a>
+        <a class="toc-pagerow" href="#s7" data-go="7"><span class="num">07</span><span>운영 주기와 보상</span><span class="arrow">→</span></a>
+        <a class="toc-pagerow" href="#s8" data-go="8"><span class="num">08</span><span>필수조건과 보너스</span><span class="arrow">→</span></a>
+        <a class="toc-pagerow" href="#s9" data-go="9"><span class="num">09</span><span>카드 사용처별 가치</span><span class="arrow">→</span></a>
+        <a class="toc-pagerow" href="#s10" data-go="10"><span class="num">10</span><span>스타의 역할과 사용처</span><span class="arrow">→</span></a>
+        <a class="toc-pagerow" href="#s11" data-go="11"><span class="num">11</span><span>판타지 포인트와 상점</span><span class="arrow">→</span></a>
+      </div>
+    </div>
+    <div class="toc-chapter">
+      <div class="toc-chapter-head">Ⅲ. 평가와 개선</div>
+      <div class="toc-pagelist">
+        <a class="toc-pagerow" href="#s12" data-go="12"><span class="num">12</span><span>구조적 장점</span><span class="arrow">→</span></a>
+        <a class="toc-pagerow" href="#s13" data-go="13"><span class="num">13</span><span>정보 구조의 한계</span><span class="arrow">→</span></a>
+        <a class="toc-pagerow" href="#s14" data-go="14"><span class="num">14</span><span>개선 제안</span><span class="arrow">→</span></a>
+        <a class="toc-pagerow" href="#s15" data-go="15"><span class="num">15</span><span>오류 위험 구간</span><span class="arrow">→</span></a>
+      </div>
+    </div>
+    <div class="toc-chapter">
+      <div class="toc-chapter-head">Ⅳ. 테스트 전략</div>
+      <div class="toc-pagelist">
+        <a class="toc-pagerow" href="#s16" data-go="16"><span class="num">16</span><span>테스트 범위와 환경</span><span class="arrow">→</span></a>
+        <a class="toc-pagerow" href="#s17" data-go="17"><span class="num">17</span><span>테스트 우선순위</span><span class="arrow">→</span></a>
+        <a class="toc-pagerow" href="#s18" data-go="18"><span class="num">18</span><span>대표 테스트 시나리오</span><span class="arrow">→</span></a>
+        <a class="toc-pagerow" href="#s19" data-go="19"><span class="num">19</span><span>종합 결론</span><span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<section id="s3" class="portfolio-section" data-secid="3" style="padding:64px 0;background:#fff;border-top:1px solid #E4E7EB;">
+  <div class="section-inner">
+  <div class="eyebrow teal">Ⅰ. 분석 배경과 결론</div>
+  <h1 class="page-title">Live 퍼즐 개요</h1>
+  <div class="page-intro">컴투스는 2026 시즌 업데이트에서 Live 퍼즐을 신규 콘텐츠로 소개했습니다.</div>
+  <div class="flex-2col" style="margin:20px 0;">
+    <div style="flex:1 1 320px;">
+      <ul class="bullet-list" style="max-width:720px;">
+        <li>공식 설명은 조건에 맞는 Live 선수를 등록해 보드를 완성하는 방식이라고 밝힙니다.</li>
+        <li>App Store 버전 기록은 12.0.0·12.0.1에서 Live 퍼즐 추가를 명시합니다.</li>
+        <li>인게임에서 Live 퍼즐은 컴프야 포인트 메뉴 안에 있습니다.</li>
+      </ul>
+    </div>
+    <div style="flex:1 1 260px;max-width:320px;">
+      <img class="lightbox-img" data-src="assets/images/A01.png" src="assets/images/A01.png" alt="콘텐츠 개요 도움말 화면" loading="lazy" decoding="async" style="width:100%;height:auto;border-radius:10px;border:1px solid #E4E7EB;display:block;">
+      <div class="caption">콘텐츠 개요를 설명하는 인게임 도움말 화면</div>
+    </div>
+  </div>
+
+  <div class="sub-heading" style="margin-top:28px;">주요 용어</div>
+  <div class="def-list" style="grid-template-columns:1fr;margin-bottom:20px;">
+    <div class="def-row" style="display:block;padding:10px 0;"><span style="display:block;color:#172033;font-weight:700;margin-bottom:2px;">Live 카드</span><span style="font-weight:400;color:#374151;">Live 퍼즐의 조건을 맞춰 등록하는 시즌 선수카드.</span></div>
+    <div class="def-row" style="display:block;padding:10px 0;"><span style="display:block;color:#172033;font-weight:700;margin-bottom:2px;">판타지 포인트</span><span style="font-weight:400;color:#374151;">Live 퍼즐 보상을 수령한 뒤 판타지 상점에서 사용하는 콘텐츠 전용 재화.</span></div>
+    <div class="def-row" style="display:block;padding:10px 0;border-bottom:none;"><span style="display:block;color:#172033;font-weight:700;margin-bottom:2px;">스타</span><span style="font-weight:400;color:#374151;">범용 재화. 무료·유료 경로로 얻을 수 있으며, 조건 재설정·추가 Daily 보드·선수 강화 등에 씁니다.</span></div>
+  </div>
+  <p class="caption" style="margin-bottom:20px;">판타지 포인트와 선수 강화 화면의 포인트는 서로 다른 재화입니다. 이 문서에서 '판타지 포인트'로 적지 않은 '포인트'는 해당 화면의 별도 재화를 가리킵니다.</p>
+
+  <details style="margin-bottom:20px;"><summary style="cursor:pointer;font-size:13px;color:#9aa4b2;">출처 보기</summary>
+    <div style="margin-top:10px;font-size:13px;color:#5F6B7A;line-height:1.9;">
+      <div>자료명 · App Store 컴프야2026 업데이트 페이지 (Live 퍼즐 도입 버전 12.0.0·12.0.1)</div>
+      <div>확인 내용 · Live 퍼즐 추가 사실과 버전 번호</div>
+      <div>확인일 · 본 분석서 작성 시점</div>
+    </div>
+  </details>
+  </div>
+</section>
+
+<section id="s4" class="portfolio-section" data-secid="4" style="padding:64px 0;background:#fff;border-top:1px solid #E4E7EB;">
+  <div class="section-inner">
+  <div class="eyebrow teal">Ⅰ. 분석 배경과 결론</div>
+  <h1 class="page-title">분석 대상 선정 이유</h1>
+  <div class="page-intro">같은 Live 카드가 여러 사용처에서 경쟁하기 때문에 분석 대상으로 정했습니다.</div>
+
+  <div class="reason-stack">
+    <div class="reason-box">
+      <div class="reason-title">이유 1 — 같은 카드가 여러 사용처에서 경쟁한다</div>
+      <ul class="bullet-list">
+        <li>라인업 또는 향후 육성 자산으로 남길 수 있습니다.</li>
+        <li>선수 특훈 재료로 사용할 수 있습니다.</li>
+        <li>Live 퍼즐에 투입해 판타지 포인트로 바꿀 수 있습니다.</li>
+      </ul>
+    </div>
+    <div class="reason-box">
+      <div class="reason-title">이유 2 — 퍼즐 보상은 고정돼도 카드의 다른 가치는 다르다</div>
+      <ul class="bullet-list">
+        <li>Daily 필수조건 완성 보상은 판타지 포인트 1,200입니다.</li>
+        <li>보너스 조건을 만족하면 총 2,400입니다.</li>
+        <li>특훈 재료 선택 화면의 카드 사례는 0.1%부터 16.6%까지 서로 다른 경험치를 보여줍니다.</li>
+      </ul>
+    </div>
+    <div class="reason-box">
+      <div class="reason-title">이유 3 — 카드 사용이 다른 성장 선택으로 이어진다</div>
+      <div style="font-size:14px;color:#374151;line-height:2;">카드 선택 → 퍼즐 완성 → 판타지 포인트 → 상점 상품 선택 → 기존 선수 성장 또는 카드 획득</div>
+    </div>
+  </div>
+
+  <div class="reason-box" style="margin-top:8px;">
+    <div class="reason-title">분석 문제 정의</div>
+    <p style="font-size:14px;color:#374151;line-height:1.9;margin:0;">Live 카드는 라인업 유지, 특훈 재료, 퍼즐 소모라는 여러 사용처를 가집니다. 하지만 각 사용 가치를 판단하는 정보는 서로 다른 화면에 나뉘어 있으며, 퍼즐 완료 이후에도 우편 수령을 거쳐야 판타지 포인트가 반영됩니다. 본 분석에서는 카드 소모 전에 필요한 판단 정보와 완료 이후 자산 처리 흐름을 중심으로 구조와 QA 리스크를 확인합니다.</p>
+  </div>
+
+  <div class="img-grid-3" style="margin:20px 0;">
+    <img src="assets/images/B01.png" alt="후보 카드 라인업 상태" loading="lazy" decoding="async">
+    <img src="assets/images/F03.webp" alt="특훈 경험치 플래티넘 카드 16.6%" loading="lazy" decoding="async">
+    <img src="assets/images/D01.png" alt="판타지 상점 화면" loading="lazy" decoding="async">
+  </div>
+  </div>
+</section>
+
+<section id="s5" class="portfolio-section" data-secid="5" style="padding:72px 0;background:#F6F7F8;border-top:1px solid #E4E7EB;position:relative;overflow:hidden;">
+  <div class="motif-branch" aria-hidden="true"><svg width="90" height="70" viewBox="0 0 90 70"><path d="M5 35 H35 M35 35 L70 8 M35 35 L70 35 M35 35 L70 62" stroke="#16213f" stroke-width="1.5" fill="none"/></svg></div>
+  <div class="section-inner">
+  <div class="eyebrow">핵심 결론</div>
+  <h1 class="hero-title" style="max-width:20ch;">Live 퍼즐의 핵심은 카드 사용처 선택입니다.</h1>
+  <p class="body-text" style="margin:0 0 12px;">컴프야 Live 퍼즐은 보유한 Live 카드를 조건형 보드에 소모해 판타지 포인트로 바꾸는 콘텐츠입니다. 같은 카드는 라인업 자산으로 남기거나, 특훈 재료로 쓰거나, 퍼즐에 투입할 수 있습니다.</p>
+  <p class="body-text" style="margin:0 0 36px;">얻은 포인트는 성장·변경 아이템과 카드팩으로 다시 쓸 수 있습니다. 카드 소모는 다른 성장 경로와 이어집니다.</p>
+
+  <div class="numbered-rows">
+    <div class="numbered-row">
+      <div class="numbered-dot">1</div>
+      <div><div class="numbered-title">복수 사용처</div><div class="numbered-desc">한 장의 카드가 전력, 특훈, 퍼즐에서 서로 다른 역할을 가집니다.</div></div>
+    </div>
+    <div class="numbered-row">
+      <div class="numbered-dot">2</div>
+      <div><div class="numbered-title">고정 보상과 다른 기회비용</div><div class="numbered-desc">퍼즐 보상은 카드 등급에 비례하지 않지만, 특훈 경험치와 라인업 가치는 카드마다 다릅니다.</div></div>
+    </div>
+    <div class="numbered-row" style="border-bottom:1px solid #E4E7EB;">
+      <div class="numbered-dot">3</div>
+      <div><div class="numbered-title">포인트 획득 뒤의 재선택</div><div class="numbered-desc">포인트를 바로 쓸지, 높은 가격의 상품까지 모을지 다시 정합니다.</div></div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<section id="s6" class="portfolio-section" data-secid="6" style="padding:64px 0;background:#fff;border-top:1px solid #E4E7EB;">
+  <div class="section-inner">
+  <div class="eyebrow teal">Ⅱ. 콘텐츠 구조 분석</div>
+  <h1 class="page-title">이용 흐름</h1>
+  <div class="page-intro">조건 확인부터 상점 이용까지의 흐름을 정리했습니다.</div>
+
+  <div class="timeline5">
+    <div class="timeline5-col"><div class="timeline5-track"><div class="timeline5-node"></div></div><div class="timeline5-num">01</div><div class="timeline5-title">조건 확인</div><div class="timeline5-desc">행·열 필수조건과 보너스 조건 확인</div></div>
+    <div class="timeline5-col"><div class="timeline5-track"><div class="timeline5-node"></div></div><div class="timeline5-num">02</div><div class="timeline5-title">카드 선택</div><div class="timeline5-desc">보유 Live 카드 중 조건에 맞는 카드 배치</div></div>
+    <div class="timeline5-col"><div class="timeline5-track"><div class="timeline5-node"></div></div><div class="timeline5-num">03</div><div class="timeline5-title">완료 확정</div><div class="timeline5-desc">카드 소모와 보상 내용을 확인한 뒤 완료</div></div>
+    <div class="timeline5-col"><div class="timeline5-track"><div class="timeline5-node"></div></div><div class="timeline5-num">04</div><div class="timeline5-title">우편 수령</div><div class="timeline5-desc">생성된 보상 우편을 수령</div></div>
+    <div class="timeline5-col"><div class="timeline5-track"><div class="timeline5-node"></div></div><div class="timeline5-num">05</div><div class="timeline5-title">상점 사용</div><div class="timeline5-desc">판타지 포인트로 성장 상품 구매</div></div>
+  </div>
+
+  <div class="img-grid-2">
+    <div><img class="lightbox-img" data-src="assets/images/A06.png" src="assets/images/A06.png" alt="Daily 보드 초기 상태" loading="lazy" decoding="async"><p class="caption">Daily 보드의 초기 상태 — 4칸에 기본 보상이 걸려 있습니다.</p></div>
+    <div><img class="lightbox-img" data-src="assets/images/B04.png" src="assets/images/B04.png" alt="Daily 보드 카드 배치 완료" loading="lazy" decoding="async"><p class="caption">조건에 맞춰 Live 카드 4장을 배치해 완성한 상태.</p></div>
+  </div>
+  <details class="evidence">
+    <summary>세부 흐름 보기 — 완성 확정과 상점 이동 화면</summary>
+    <div class="img-grid-evidence">
+      <div><img class="lightbox-img" data-src="assets/images/C01.png" src="assets/images/C01.png" alt="완성 확정 카드 소모 안내" loading="lazy" decoding="async"><p class="caption">완성 확정 시 카드 소모를 안내하는 화면.</p></div>
+      <div><img class="lightbox-img" data-src="assets/images/D01.png" src="assets/images/D01.png" alt="판타지 상점" loading="lazy" decoding="async"><p class="caption">완료 후 이동하는 판타지 상점 화면.</p></div>
+    </div>
+    <p style="margin-top:12px;font-size:14px;color:#374151;line-height:1.9;">조건 재설정(조건당 10스타)이나 참여 보류도 선택할 수 있고, 보너스 조건까지 만족할지도 이 단계에서 함께 정합니다. 새 보드가 갱신되면 바뀐 카드·재화 상태를 기준으로 같은 판단을 반복합니다.</p>
+  </details>
+  </div>
+</section>
+
+<section id="s7" class="portfolio-section" data-secid="7" style="padding:64px 0;background:#fff;border-top:1px solid #E4E7EB;">
+  <div class="section-inner">
+  <div class="eyebrow teal">Ⅱ. 콘텐츠 구조 분석</div>
+  <h1 class="page-title">운영 주기와 보상</h1>
+  <div class="page-intro">Daily·Weekly·Half의 갱신 주기와 보상 구조를 정리했습니다.</div>
+
+  <div class="time-strip">
+    <div class="time-block"><div class="time-block-when">매일</div><div class="time-block-name">Daily</div></div>
+    <div class="time-block"><div class="time-block-when">매주 월요일</div><div class="time-block-name">Weekly</div></div>
+    <div class="time-block"><div class="time-block-when">전·후반기 각 한 번</div><div class="time-block-name">Half</div></div>
+  </div>
+
+  <div class="def-list" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));margin-bottom:20px;">
+    <div class="box-neutral"><div class="box-neutral-title">Daily</div>
+      <div class="def-row"><span>규모</span><span>2×2, 4칸</span></div>
+      <div class="def-row"><span>갱신</span><span>매일 00시</span></div>
+      <div class="def-row"><span>필수조건 완성</span><span>판타지 포인트 1,200</span></div>
+      <div class="def-row"><span>보너스 포함 완성</span><span>총 2,400 판타지 포인트</span></div>
+      <div class="def-row" style="border-bottom:none;"><span>추가 보드</span><span>완료 후 300스타로 1회 개방</span></div>
+    </div>
+    <div class="box-neutral"><div class="box-neutral-title">Weekly</div>
+      <div class="def-row"><span>규모</span><span>2×4, 8칸</span></div>
+      <div class="def-row"><span>갱신</span><span>매주 월요일</span></div>
+      <div class="def-row"><span>필수조건 완성</span><span>판타지 포인트 2,100</span></div>
+      <div class="def-row" style="border-bottom:none;"><span>보너스 포함 완성</span><span>총 4,200 판타지 포인트</span></div>
+    </div>
+    <div class="box-neutral"><div class="box-neutral-title">Half</div>
+      <div class="def-row"><span>개방 조건</span><span>Daily·Weekly 누적 완료 100회</span></div>
+      <div class="def-row"><span>운영</span><span>전·후반기 각 한 번</span></div>
+      <div class="def-row" style="border-bottom:none;"><span>확인 범위</span><span>실제 Half 보드 구성과 지급 보상은 직접 확인하지 않음</span></div>
+    </div>
+  </div>
+
+  <div class="sub-heading">주기별 선택 구조 차이</div>
+  <div class="flex-2col-eq" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));">
+    <div class="box-neutral"><div class="box-neutral-title">Daily</div><div class="box-text">보유한 Live 카드 상황에서 당일 조건과 카드 사용처를 판단하는 짧은 주기의 선택입니다.</div></div>
+    <div class="box-neutral"><div class="box-neutral-title">Weekly</div><div class="box-text">Daily보다 많은 조건과 칸을 다루며, 주간 단위로 카드 투입과 보상을 판단하는 구조입니다.</div></div>
+    <div class="box-neutral"><div class="box-neutral-title">Half</div><div class="box-text">Daily·Weekly 완료 누적을 더 긴 목표와 연결하는 구조입니다.</div></div>
+  </div>
+
+  <div class="img-grid-2">
+    <div><img class="lightbox-img" data-src="assets/images/A05.png" src="assets/images/A05.png" alt="Daily Weekly Half 운영주기 도움말" loading="lazy" decoding="async"><p class="caption">Daily·Weekly·Half 운영 주기를 설명하는 도움말 화면.</p></div>
+    <div><img class="lightbox-img" data-src="assets/images/A07.png" src="assets/images/A07.png" alt="Weekly 보드 8칸" loading="lazy" decoding="async"><p class="caption">Weekly 보드 — 8칸으로 구성된 주간 판.</p></div>
+  </div>
+  <details class="evidence">
+    <summary>근거 보기 — 추가 보드와 누적 화면</summary>
+    <div class="img-grid-evidence">
+      <div><img class="lightbox-img" data-src="assets/images/A09.png" src="assets/images/A09.png" alt="추가 Daily 보드 300스타" loading="lazy" decoding="async"><p class="caption">300스타로 여는 추가 Daily 보드.</p></div>
+      <div><img class="lightbox-img" data-src="assets/images/C03.png" src="assets/images/C03.png" alt="Daily 완료 누적 1/100" loading="lazy" decoding="async"><p class="caption">Daily 완료 누적 1/100 표시 화면.</p></div>
+    </div>
+  </details>
+  </div>
+</section>
+
+<section id="s8" class="portfolio-section" data-secid="8" style="padding:64px 0;background:#fff;border-top:1px solid #E4E7EB;">
+  <div class="section-inner">
+  <div class="eyebrow teal">Ⅱ. 콘텐츠 구조 분석</div>
+  <h1 class="page-title">필수조건과 보너스</h1>
+  <div class="page-intro">기본 완성과 추가 보상 사이에서 카드와 스타 사용을 선택합니다.</div>
+
+  <div class="flex-2col-eq">
+    <div class="box-neutral"><div class="box-neutral-title">필수조건</div><div class="box-text">보드를 완성하기 위해 반드시 충족해야 하는 조건입니다. 행과 열의 조건을 동시에 만족하는 카드를 교차점에 배치해야 합니다. 확인된 조건 사례는 구단, 투·타 구분, 포지션, 등번호, 능력치 합계, 등급 등입니다.</div></div>
+    <div class="box-neutral"><div class="box-neutral-title">보너스</div><div class="box-text">추가 카드를 사용해 총 보상을 높일 수 있는 선택 조건입니다. Daily 기준 필수조건만 만족하면 1,200포인트, 보너스까지 만족하면 2,400포인트를 받습니다.</div></div>
+  </div>
+  <div class="flex-2col-eq">
+    <div class="box-neutral"><div class="box-neutral-title">조건 재설정</div><div class="box-text">10스타를 사용해 현재 조건을 변경하는 선택 기능입니다. 변경 결과는 실행 전에 알 수 없습니다.</div></div>
+    <div class="box-neutral"><div class="box-neutral-title">보조 수단</div><div class="box-text">인게임 도움말은 대여 카드와 만능카드 같은 보조 수단을 설명합니다. 판타지 상점에서 Live 퍼즐 만능카드가 확인됩니다.</div></div>
+  </div>
+  <p class="caption" style="margin-bottom:20px;">완성만 할까, 보너스까지 노릴까 — 필수조건과 보너스 사이의 선택입니다.</p>
+
+  <div class="img-grid-2">
+    <div><img class="lightbox-img" data-src="assets/images/A03.png" src="assets/images/A03.png" alt="보너스 조건과 조건 재설정 도움말" loading="lazy" decoding="async"><p class="caption">보너스 조건과 조건 재설정 방법을 설명하는 도움말 화면.</p></div>
+    <div><img class="lightbox-img" data-src="assets/images/A08.png" src="assets/images/A08.png" alt="조건 재설정 10스타 확인 팝업" loading="lazy" decoding="async"><p class="caption">조건 재설정 시 10스타 소모를 확인하는 팝업.</p></div>
+  </div>
+  <details class="evidence">
+    <summary>근거 보기 — 콘텐츠 개요와 배치 완료 화면</summary>
+    <div class="img-grid-evidence">
+      <div><img class="lightbox-img" data-src="assets/images/A01.png" src="assets/images/A01.png" alt="콘텐츠 개요 조건과 보너스" loading="lazy" decoding="async"><p class="caption">콘텐츠 개요 도움말의 조건·보너스 안내.</p></div>
+      <div><img class="lightbox-img" data-src="assets/images/B04.png" src="assets/images/B04.png" alt="Daily 보드 카드 배치 완료" loading="lazy" decoding="async"><p class="caption">Daily 보드 카드 배치 완료 화면.</p></div>
+    </div>
+  </details>
+  </div>
+</section>
+
+<section id="s9" class="portfolio-section" data-secid="9" style="padding:64px 0;background:#fff;border-top:1px solid #E4E7EB;">
+  <div class="section-inner">
+  <div class="eyebrow teal">Ⅱ. 콘텐츠 구조 분석</div>
+  <h1 class="page-title" style="font-size:30px;">카드 사용처별 가치</h1>
+  <div class="page-intro">같은 Live 카드도 사용처에 따라 얻는 가치가 달라집니다.</div>
+
+  <div class="branch-grid">
+    <div>
+      <div class="branch-heading"><div class="branch-tag">Live 카드</div><div class="branch-line"></div></div>
+      <p class="caption" style="margin-bottom:14px;">이 카드를 남길까, 특훈에 쓸까, 퍼즐에 넣을까.</p>
+      <div class="branch-list">
+        <div class="branch-item" style="border-left-color:#94a3b8;">
+          <div class="branch-item-head"><span style="color:#5F6B7A;">보존</span><span>라인업·육성 자산으로 남긴다</span></div>
+          <p>현재 전력과 육성 가능성을 유지합니다. 후보 화면에는 라인업에 쓰인 카드 상태가 따로 표시됩니다.</p>
+        </div>
+        <div class="branch-item" style="border-left-color:#0f766e;">
+          <div class="branch-item-head"><span style="color:#0f766e;">특훈</span><span>선수 특훈 경험치 재료로 쓴다</span></div>
+          <p>카드는 소멸하고 경험치로 바뀝니다. 등급에 따라 경험치가 다르고, 같은 선수면 상승량이 <span class="keep-phrase">두 배</span>가 됩니다.</p>
+        </div>
+        <div class="branch-item" style="border-left-color:#16213f;">
+          <div class="branch-item-head"><span style="color:#16213f;">퍼즐</span><span>조건 충족 후 판타지 포인트로 전환한다</span></div>
+          <p>카드는 소멸하고 판타지 포인트로 바뀝니다. 보상은 등급이 아니라 <span class="keep-phrase">조건 충족 여부</span>로 정해집니다.</p>
+        </div>
+      </div>
+      <div class="box-neutral" style="padding:14px 16px;">
+        <div style="font-size:12px;color:#5F6B7A;font-weight:700;margin-bottom:8px;">플레이 사례 — 특훈 재료 선택 화면에서 확인한 개별 카드 사례. 고정 공식·평균값 아님</div>
+        <div class="bar-rows">
+          <div class="bar-row"><div class="bar-label">노멀</div><div class="bar-track"><div class="bar-fill" style="width:0.6%;min-width:3px;background:#94a3b8;"></div></div><div class="bar-val">0.1%</div></div>
+          <div class="bar-row"><div class="bar-label">레어</div><div class="bar-track"><div class="bar-fill" style="width:2.4%;min-width:4px;background:#94a3b8;"></div></div><div class="bar-val">0.4%</div></div>
+          <div class="bar-row"><div class="bar-label">스페셜</div><div class="bar-track"><div class="bar-fill" style="width:9%;background:#0f766e;"></div></div><div class="bar-val">1.5%</div></div>
+          <div class="bar-row"><div class="bar-label">히어로</div><div class="bar-track"><div class="bar-fill" style="width:30%;background:#0f766e;"></div></div><div class="bar-val">5.0%</div></div>
+          <div class="bar-row"><div class="bar-label">플래티넘</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:#0f766e;"></div></div><div class="bar-val">16.6%</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="branch-images">
+      <div><img class="lightbox-img" data-src="assets/images/B01.png" src="assets/images/B01.png" alt="퍼즐 후보 카드 선택 화면" loading="lazy" decoding="async"><p class="caption">퍼즐 후보 화면 — 라인업에 쓰인 카드는 상태가 따로 표시됩니다.</p></div>
+      <div><img class="lightbox-img" data-src="assets/images/F03.webp" src="assets/images/F03.webp" alt="특훈 경험치 화면" loading="lazy" decoding="async"><p class="caption">특훈 경험치 화면 — 플래티넘 등급 재료 카드의 경험치 사례.</p></div>
+    </div>
+  </div>
+
+  <p class="statement" style="margin:0 0 12px;">퍼즐에 가장 적합한 카드는 단순히 등급이 낮은 카드가 아니라, 조건을 만족하면서 다른 사용처의 기회비용이 상대적으로 낮은 카드입니다.</p>
+
+  <details class="evidence" style="margin-top:20px;">
+    <summary>근거 보기</summary>
+    <div class="img-grid-evidence">
+      <div><img class="lightbox-img" data-src="assets/images/F01.webp" src="assets/images/F01.webp" alt="재료 카드 선택 안내" loading="lazy" decoding="async"><p class="caption">특훈 재료 카드 선택 안내 화면.</p></div>
+      <div><img class="lightbox-img" data-src="assets/images/F09.webp" src="assets/images/F09.webp" alt="재료 카드 소멸 안내" loading="lazy" decoding="async"><p class="caption">재료 카드가 모두 소멸됨을 안내하는 화면.</p></div>
+      <div><img class="lightbox-img" data-src="assets/images/F14.webp" src="assets/images/F14.webp" alt="특훈 완료 결과" loading="lazy" decoding="async"><p class="caption">특훈 완료 Lv.1 결과 화면.</p></div>
+    </div>
+  </details>
+  </div>
+</section>
+
+<section id="s10" class="portfolio-section" data-secid="10" style="padding:64px 0;background:#fff;border-top:1px solid #E4E7EB;">
+  <div class="section-inner">
+  <div class="eyebrow teal">Ⅱ. 콘텐츠 구조 분석</div>
+  <h1 class="page-title">스타의 역할과 사용처</h1>
+  <div class="page-intro">조건 변경, 추가 참여, 선수 강화가 같은 재화를 사용합니다.</div>
+
+  <div class="flex-2col-eq" style="align-items:stretch;">
+    <div class="box-neutral"><div class="box-neutral-title">조건 재설정</div><div class="box-text">조건당 10스타</div></div>
+    <div class="box-neutral"><div class="box-neutral-title">추가 Daily 보드</div><div class="box-text">완료 후 300스타로 1회 개방</div></div>
+    <div class="box-neutral"><div class="box-neutral-title">선수 강화</div><div class="box-text">강화 화면에서 포인트 강화와 스타 강화가 함께 제공됨</div></div>
+  </div>
+
+  <details class="evidence">
+    <summary>근거 보기 — 획득 경로와 강화 사례</summary>
+    <div style="margin-top:10px;">
+      <ul class="bullet-list" style="margin-bottom:14px;">
+        <li>일일·주간 미션 보상과 충전소 상품에서 스타를 얻을 수 있습니다.</li>
+        <li>특정 카드 사례에서는 114스타 강화 후 종합 수치와 일부 능력치가 상승했습니다. 이 값은 이 카드 한 건의 강화 기록이며 일반적인 강화 비용으로 확대하지 않습니다.</li>
+        <li>특정 Daily에서 재설정 9회에 90스타가 사용된 기록도 개별 사례이며, 평균 비용이 아닙니다.</li>
+      </ul>
+      <div class="img-grid-evidence">
+        <div><img class="lightbox-img" data-src="assets/images/E04.webp" src="assets/images/E04.webp" alt="선수 강화 스타 114 강화 전" loading="lazy" decoding="async"><p class="caption">선수 강화 화면 — 스타 114를 쓴 강화 직전 상태.</p></div>
+        <div><img class="lightbox-img" data-src="assets/images/E06.webp" src="assets/images/E06.webp" alt="스타 강화후 종합 91에서 92" loading="lazy" decoding="async"><p class="caption">강화 후 — 종합 수치와 일부 능력치가 상승한 결과.</p></div>
+        <div><img class="lightbox-img" data-src="assets/images/A08.png" src="assets/images/A08.png" alt="조건 재설정 10스타 확인" loading="lazy" decoding="async"><p class="caption">조건 재설정 10스타 확인 팝업.</p></div>
+        <div><img class="lightbox-img" data-src="assets/images/E01.png" src="assets/images/E01.png" alt="스타 충전소 유료 상품" loading="lazy" decoding="async"><p class="caption">스타 충전소 유료 상품 화면.</p></div>
+        <div><img class="lightbox-img" data-src="assets/images/E02.png" src="assets/images/E02.png" alt="일일미션 스타 보상 무료 수급" loading="lazy" decoding="async"><p class="caption">일일미션 스타 보상 무료 수급 화면.</p></div>
+      </div>
+    </div>
+  </details>
+  </div>
+</section>
+
+<section id="s11" class="portfolio-section" data-secid="11" style="padding:64px 0;background:#fff;border-top:1px solid #E4E7EB;">
+  <div class="section-inner">
+  <div class="eyebrow teal">Ⅱ. 콘텐츠 구조 분석</div>
+  <h1 class="page-title">판타지 포인트와 상점</h1>
+  <div class="page-intro">완료 보상은 우편을 거쳐 상점 상품으로 이어집니다.</div>
+
+  <div class="cycle-flow">
+    <span>Live 카드</span><span class="arrow">→</span><span>퍼즐 완료</span><span class="arrow">→</span><span>우편 수령</span><span class="arrow">→</span><span>판타지 포인트</span><span class="arrow">→</span><span>상점 상품</span><span class="arrow">→</span><span>선수 성장·카드 확보</span>
+  </div>
+
+  <div class="sub-heading">확보한 화면에서 확인된 상품군</div>
+  <div class="img-grid-4">
+    <div class="box-neutral"><div class="box-neutral-sub">퍼즐 보조</div><div class="box-neutral-title" style="margin-bottom:4px;">Live 퍼즐 만능카드</div><div class="box-text">10,000포인트 · 주 1회 표시</div></div>
+    <div class="box-neutral"><div class="box-neutral-sub">선수 성장·변경</div><div class="box-neutral-title" style="margin-bottom:4px;">고유능력 변경권 외</div><div class="box-text">화면 확인 가격 사례 3,000~3,500포인트</div></div>
+    <div class="box-neutral"><div class="box-neutral-sub">선수·코치 카드팩</div><div class="box-neutral-title" style="margin-bottom:4px;">드림·나눔팩, 코치팩</div><div class="box-text">가격 사례 700~1,400포인트, 주 20회 표시 상품 존재</div></div>
+    <div class="box-neutral"><div class="box-neutral-sub">기타</div><div class="box-neutral-title" style="margin-bottom:4px;">럭키백 등</div><div class="box-text">확률형 상품이 보입니다.</div></div>
+  </div>
+
+  <div class="sub-heading">가격대가 만드는 선택 구조</div>
+  <p class="body-text" style="margin:0 0 14px;">낮은 가격대 상품은 현재 포인트로 비교적 빠르게 구매할 수 있는 선택지이고, 높은 가격대 상품은 즉시 소비하지 않고 포인트를 누적하는 두 번째 선택을 만듭니다. 핵심은 퍼즐 보상이 판타지 포인트를 거쳐 상점에서 다시 성장 선택으로 이어지는 순환 구조입니다.</p>
+
+  <div class="img-grid-2">
+    <div><img class="lightbox-img" data-src="assets/images/D01.png" src="assets/images/D01.png" alt="판타지 상점" loading="lazy" decoding="async"><p class="caption">판타지 상점 전체 화면 — 성장 아이템과 카드팩이 함께 진열됩니다.</p></div>
+    <div><img class="lightbox-img" data-src="assets/images/D05.png" src="assets/images/D05.png" alt="Live 퍼즐 만능카드 10000" loading="lazy" decoding="async"><p class="caption">가장 비싼 상품인 Live 퍼즐 만능카드 — 10,000포인트, 주 1회 표시.</p></div>
+  </div>
+  <details class="evidence">
+    <summary>근거 보기 — 우편함·구매확인·카드팩 화면</summary>
+    <div class="img-grid-evidence">
+      <div><img class="lightbox-img" data-src="assets/images/C04.png" src="assets/images/C04.png" alt="우편함 완성 보상 2400" loading="lazy" decoding="async"><p class="caption">완성 보상 2,400포인트가 담긴 우편함.</p></div>
+      <div><img class="lightbox-img" data-src="assets/images/D02.png" src="assets/images/D02.png" alt="등급증가량재설정권 구매 확인" loading="lazy" decoding="async"><p class="caption">등급증가량재설정권 구매 확인 화면.</p></div>
+      <div><img class="lightbox-img" data-src="assets/images/D07.png" src="assets/images/D07.png" alt="선수 코치 카드팩 가격" loading="lazy" decoding="async"><p class="caption">선수·코치 카드팩 가격 화면.</p></div>
+      <div><img class="lightbox-img" data-src="assets/images/D09.png" src="assets/images/D09.png" alt="카드팩 구매 후 잔액 600" loading="lazy" decoding="async"><p class="caption">카드팩 구매 후 잔액 600 반영 화면.</p></div>
+    </div>
+  </details>
+  </div>
+</section>
+
+<section id="s12" class="portfolio-section" data-secid="12" style="padding:64px 0;background:#fff;border-top:1px solid #E4E7EB;position:relative;overflow:hidden;">
+  <div class="motif-branch" aria-hidden="true"><svg width="90" height="70" viewBox="0 0 90 70"><path d="M5 35 H35 M35 35 L70 8 M35 35 L70 35 M35 35 L70 62" stroke="#16213f" stroke-width="1.5" fill="none"/></svg></div>
+  <div class="section-inner">
+  <div class="eyebrow">Ⅲ. 평가와 개선</div>
+  <h1 class="page-title">구조적 장점</h1>
+  <div class="page-intro">보유 카드와 목표에 따라 참여 수준을 조절할 수 있습니다.</div>
+
+  <div class="row-list">
+    <div class="row-item">
+      <div class="row-title">장점 1 — 필수조건만 충족해도 완료 가능</div>
+      <p style="margin-bottom:6px;">구조적 이유 — 필수조건과 보너스 조건이 분리돼 있어, 스타 없이 필수조건만 맞춰도 기본 보상을 받을 수 있습니다.</p>
+      <div class="cause">사례 — Daily는 필수조건만 완성해도 1,200포인트가 지급됩니다.</div>
+    </div>
+    <div class="row-item">
+      <div class="row-title">장점 2 — 보너스 조건으로 추가 보상을 선택 가능</div>
+      <p style="margin-bottom:6px;">구조적 이유 — 보너스는 선택 사항이라 더 가치 있는 카드를 쓸지 말지 직접 정할 수 있습니다.</p>
+      <div class="cause">사례 — 보너스까지 만족하면 Daily 보상이 2,400포인트로 늘어납니다.</div>
+    </div>
+    <div class="row-item" style="border-bottom:1px solid #E4E7EB;">
+      <div class="row-title">장점 3 — 판타지 상점 상품이 다음 참여 목표를 제공</div>
+      <p style="margin-bottom:6px;">구조적 이유 — 완료 보상이 즉시 소비되지 않고 상점 상품 구매라는 다음 목표로 이어집니다.</p>
+      <div class="cause">사례 — 10,000포인트 만능카드는 확인된 상품 중 높은 가격대로, 포인트를 바로 사용할지 누적할지 판단하게 하는 사례입니다.</div>
+    </div>
+  </div>
+
+  <div class="img-grid-2" style="margin:20px 0;">
+    <img src="assets/images/B01.png" alt="후보 카드" loading="lazy" decoding="async">
+    <img src="assets/images/A08.png" alt="조건 재설정 확인" loading="lazy" decoding="async">
+  </div>
+  <p class="caption">이 장점은 화면과 규칙 구조를 바탕으로 한 분석입니다. 실제 만족도·잔존율·매출 효과를 주장하지 않습니다.</p>
+  </div>
+</section>
+
+<section id="s13" class="portfolio-section" data-secid="13" style="padding:64px 0;background:#fff;border-top:1px solid #E4E7EB;position:relative;overflow:hidden;">
+  <div class="motif-frames" aria-hidden="true"><svg width="100" height="80" viewBox="0 0 100 80"><rect x="2" y="2" width="55" height="40" fill="none" stroke="#16213f" stroke-width="1.5"/><rect x="30" y="35" width="55" height="40" fill="none" stroke="#16213f" stroke-width="1.5"/></svg></div>
+  <div class="section-inner">
+  <div class="eyebrow">Ⅲ. 평가와 개선</div>
+  <h1 class="page-title">정보 구조의 한계</h1>
+  <div class="page-intro">선택에 필요한 정보가 여러 화면과 처리 단계에 나뉘어 있습니다.</div>
+
+  <div class="row-list">
+    <div class="row-item">
+      <div class="row-title">1. 카드의 다른 사용 가치가 여러 화면에 분산</div>
+      <p style="margin-bottom:6px;">직접 확인 — 특훈 경험치는 특훈 재료 선택 화면에서 확인합니다.</p>
+      <div class="cause">분석 — 퍼즐 카드 선택 중에는 같은 정보를 바로 비교하기 어렵습니다.</div>
+    </div>
+    <div class="row-item">
+      <div class="row-title">2. 완료 전 소모 카드와 보상 비교 정보가 제한적</div>
+      <p style="margin-bottom:6px;">직접 확인 — 완성 확정 화면은 카드 소모를 안내하지만, 예상 보상과의 비교는 함께 표시하지 않습니다.</p>
+      <div class="cause">분석 — 확정 전에 얻는 것과 잃는 것을 같은 화면에서 견주기 어렵습니다.</div>
+    </div>
+    <div class="row-item" style="border-bottom:1px solid #E4E7EB;">
+      <div class="row-title">3. 완료와 실제 포인트 반영 사이에 우편 수령 단계 존재</div>
+      <p style="margin-bottom:6px;">직접 확인 — 보드를 완료해도 우편을 수령해야 상점 잔액에 반영됩니다.</p>
+      <div class="cause">분석 — 완료 상태와 보상 반영 상태가 화면상 즉시 연결되지 않습니다.</div>
+    </div>
+  </div>
+
+  <div class="img-grid-2">
+    <div><img class="lightbox-img" data-src="assets/images/B01.png" src="assets/images/B01.png" alt="후보 카드 화면" loading="lazy" decoding="async"><p class="caption">퍼즐 후보 화면 — 조건 확인과 라인업 상태만 보입니다.</p></div>
+    <div><img class="lightbox-img" data-src="assets/images/F03.webp" src="assets/images/F03.webp" alt="특훈 경험치 플래티넘 화면" loading="lazy" decoding="async"><p class="caption">특훈 경험치는 따로 다른 화면에서 확인해야 합니다.</p></div>
+  </div>
+  <details class="evidence">
+    <summary>근거 보기 — 재설정·우편함 화면</summary>
+    <div class="img-grid-evidence">
+      <div><img class="lightbox-img" data-src="assets/images/A08.png" src="assets/images/A08.png" alt="조건 재설정 확인" loading="lazy" decoding="async"><p class="caption">조건 재설정 확인 팝업.</p></div>
+      <div><img class="lightbox-img" data-src="assets/images/C04.png" src="assets/images/C04.png" alt="우편함 완성 보상" loading="lazy" decoding="async"><p class="caption">우편함에 쌓인 완성 보상.</p></div>
+    </div>
+  </details>
+  </div>
+</section>
+
+<section id="s14" class="portfolio-section" data-secid="14" style="padding:64px 0;background:#fff;border-top:1px solid #E4E7EB;">
+  <div class="section-inner">
+  <div class="eyebrow">Ⅲ. 평가와 개선</div>
+  <h1 class="page-title">개선 제안</h1>
+  <div class="page-intro">선택에 필요한 정보를 확인 시점에 가깝게 제공하는 방향을 제안했습니다.</div>
+
+  <div class="proposal-stack">
+    <div class="proposal-box">
+      <span class="proposal-tag">개선안 1</span>
+      <div class="row-title">카드 사용 가치 미리보기</div>
+      <p style="margin:6px 0;"><b>현재</b> — 라인업 상태와 특훈 경험치를 다른 화면에서 확인해야 합니다.</p>
+      <p style="margin:6px 0;"><b>개선</b> — 퍼즐 후보 화면에서 라인업 사용 여부와 예상 특훈 경험치를 함께 표시합니다.</p>
+      <p style="margin:6px 0;"><b>기대 효과</b> — 카드를 소모하기 전에 다른 사용 가치를 비교할 수 있습니다.</p>
+    </div>
+    <div class="proposal-box">
+      <span class="proposal-tag">개선안 2</span>
+      <div class="row-title">완료 전 소모·보상 요약</div>
+      <p style="margin:6px 0;"><b>현재</b> — 완료 시 사라지는 카드와 획득 보상을 한눈에 비교하기 어렵습니다.</p>
+      <p style="margin:6px 0;"><b>개선</b> — 완료 직전에 소모 카드, 사용 스타, 예상 판타지 포인트를 함께 보여줍니다.</p>
+      <p style="margin:6px 0;"><b>기대 효과</b> — 확정 전에 선택 결과를 다시 확인할 수 있습니다.</p>
+    </div>
+    <div class="proposal-box">
+      <span class="proposal-tag">개선안 3</span>
+      <div class="row-title">완료 후 보상 경로 연결</div>
+      <p style="margin:6px 0;"><b>현재</b> — 완료 후 우편함을 거쳐야 판타지 포인트가 반영됩니다.</p>
+      <p style="margin:6px 0;"><b>개선</b> — 완료 결과 화면에서 생성된 보상 우편으로 바로 이동할 수 있게 합니다.</p>
+      <p style="margin:6px 0;"><b>기대 효과</b> — 완료와 보상 수령 상태를 이어서 확인할 수 있습니다.</p>
+    </div>
+  </div>
+
+  <div class="img-grid-2">
+    <div><img class="lightbox-img" data-src="assets/images/C01.png" src="assets/images/C01.png" alt="완성 확정 카드 소모 안내" loading="lazy" decoding="async"><p class="caption">완성 확정 시 카드 소모를 안내하는 화면 — 개선안 2의 근거.</p></div>
+    <div><img class="lightbox-img" data-src="assets/images/C04.png" src="assets/images/C04.png" alt="우편함 완성 보상" loading="lazy" decoding="async"><p class="caption">완성 보상이 우편함에 쌓이는 화면 — 개선안 3의 근거.</p></div>
+  </div>
+  </div>
+</section>
+
+<section id="s15" class="portfolio-section" data-secid="15" style="padding:64px 0;background:#fff;border-top:1px solid #E4E7EB;">
+  <div class="section-inner">
+  <div class="eyebrow">Ⅲ. 평가와 개선</div>
+  <h1 class="page-title">오류 위험 구간</h1>
+  <div class="page-intro">아래 항목은 콘텐츠의 자산 처리 구조에서 도출한 잠재 QA 리스크이며, 실제 발견된 결함을 의미하지 않습니다.</div>
+
+  <div class="def-list" style="grid-template-columns:15% 29% 27% 29%;margin:32px 0 0;column-gap:0;">
+    <div class="def-row" style="border-bottom:1px solid #E4E7EB;padding:4px 14px 16px;"><span style="color:#9aa4b2;font-weight:700;font-size:12px;">처리 구간</span></div>
+    <div class="def-row" style="border-bottom:1px solid #E4E7EB;padding:4px 14px 16px;"><span style="color:#9aa4b2;font-weight:700;font-size:12px;">발생 가능 오류</span></div>
+    <div class="def-row" style="border-bottom:1px solid #E4E7EB;padding:4px 14px 16px;"><span style="color:#9aa4b2;font-weight:700;font-size:12px;">영향</span></div>
+    <div class="def-row" style="border-bottom:1px solid #E4E7EB;padding:4px 14px 16px;"><span style="color:#9aa4b2;font-weight:700;font-size:12px;">검증 기준</span></div>
+  </div>
+  <div class="risk-flow" style="margin-top:20px;margin-bottom:18px;">
+    <div class="risk-flow-row" style="grid-template-columns:15% 29% 27% 29%;padding:22px 0;border-top:1px solid #EEF1F4;">
+      <div class="risk-flow-zone" style="padding:0 14px;">카드 선택·완료</div>
+      <div class="risk-flow-body" style="padding:0 14px;"><span class="issue">선택하지 않은 카드가 소모되거나 수량이 다르게 처리됨</span></div>
+      <div class="risk-flow-body" style="padding:0 14px;">라인업이나 특훈에 사용할 카드 손실</div>
+      <div class="risk-flow-body risk-flow-check" style="padding:0 14px;">화면에서 선택한 카드와 실제 소모된 카드의 대상·수량 일치</div>
+    </div>
+    <div class="risk-flow-row" style="grid-template-columns:15% 29% 27% 29%;padding:22px 0;border-top:1px solid #EEF1F4;">
+      <div class="risk-flow-zone" style="padding:0 14px;">조건 재설정</div>
+      <div class="risk-flow-body" style="padding:0 14px;"><span class="issue">연속 입력 또는 통신 지연 중 스타가 중복 차감되거나 조건이 여러 번 변경됨</span></div>
+      <div class="risk-flow-body" style="padding:0 14px;">스타 손실과 화면·서버 상태 불일치</div>
+      <div class="risk-flow-body risk-flow-check" style="padding:0 14px;">요청 1회당 10스타 1회 차감과 조건 1회 변경</div>
+    </div>
+    <div class="risk-flow-row" style="grid-template-columns:15% 29% 27% 29%;padding:22px 0;border-top:1px solid #EEF1F4;">
+      <div class="risk-flow-zone" style="padding:0 14px;">완료·우편 수령</div>
+      <div class="risk-flow-body" style="padding:0 14px;"><span class="issue">완료 처리, 보상 우편, 포인트 지급이 누락되거나 중복됨</span></div>
+      <div class="risk-flow-body" style="padding:0 14px;">보상 누락 또는 판타지 포인트 중복 지급</div>
+      <div class="risk-flow-body risk-flow-check" style="padding:0 14px;">완료 1회와 우편 1건, 포인트 1회 지급의 연결</div>
+    </div>
+    <div class="risk-flow-row" style="grid-template-columns:15% 29% 27% 29%;padding:22px 0;border-top:1px solid #EEF1F4;">
+      <div class="risk-flow-zone" style="padding:0 14px;">상점 구매·누적 진행</div>
+      <div class="risk-flow-body" style="padding:0 14px;"><span class="issue">포인트 차감, 아이템 지급, 누적 횟수가 서로 다르게 저장됨</span></div>
+      <div class="risk-flow-body" style="padding:0 14px;">상품 손실 또는 Half 개방 진행 오류</div>
+      <div class="risk-flow-body risk-flow-check" style="padding:0 14px;">구매 전후 잔액·아이템·누적 횟수와 재접속 후 상태 일치</div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<section id="s16" class="portfolio-section" data-secid="16" style="padding:64px 0;background:#F6F7F8;border-top:1px solid #E4E7EB;">
+  <div class="section-inner">
+  <div class="chapter-rule"></div>
+  <div class="eyebrow navy">Ⅳ. 테스트 전략</div>
+  <h1 class="page-title">테스트 범위와 환경</h1>
+  <div class="page-intro">카드 선택부터 상품 지급까지 하나의 처리 흐름으로 검증합니다.</div>
+
+  <div class="puzzle-flow">
+    <div class="puzzle-flow-label">A. 퍼즐 처리</div>
+    <div class="puzzle-flow-group four">
+      <div class="puzzle-flow-box">카드 선택</div>
+      <div class="puzzle-flow-box">조건 판정</div>
+      <div class="puzzle-flow-box">완료 확정</div>
+      <div class="puzzle-flow-box state-change">카드·스타 소모</div>
+    </div>
+    <div class="puzzle-flow-connector"></div>
+    <div class="puzzle-flow-label">B. 보상·상점 처리</div>
+    <div class="puzzle-flow-group five">
+      <div class="puzzle-flow-box">우편 생성</div>
+      <div class="puzzle-flow-box state-change">판타지 포인트 반영</div>
+      <div class="puzzle-flow-box state-change">상품 구매</div>
+      <div class="puzzle-flow-box state-change">아이템 지급</div>
+      <div class="puzzle-flow-box">재접속 후 상태 유지</div>
+    </div>
+  </div>
+
+  <div class="sub-heading">테스트 환경</div>
+  <div class="def-list">
+    <div class="def-row"><span>플랫폼 / 기기</span><span>Android · Galaxy S23 Ultra</span></div>
+    <div class="def-row"><span>OS / 앱 버전</span><span>Android 16 · 12.3.1</span></div>
+    <div class="def-row"><span>입력·화면 / 해상도</span><span>터치·가로 고정 · FHD+</span></div>
+    <div class="def-row"><span>네트워크 / 계정·언어</span><span>5G · 일반 계정, 한국어</span></div>
+  </div>
+  <p class="caption" style="margin:0 0 28px;">재화 판정 기준 — 화면 표시값의 전후 비교</p>
+
+  <div class="sub-heading">테스트 접근법</div>
+  <div class="approach-grid">
+    <div><div class="row-title">정상 흐름</div><div class="caption">기본 완료 경로 확인</div></div>
+    <div><div class="row-title">경계값·상태전이</div><div class="caption">조건 임계값과 누적 전환 지점</div></div>
+    <div><div class="row-title">중복 입력</div><div class="caption">연속 요청 시 처리 일관성</div></div>
+    <div><div class="row-title">중단·복구</div><div class="caption">네트워크·자정 경계 처리</div></div>
+  </div>
+  </div>
+</section>
+
+<section id="s17" class="portfolio-section" data-secid="17" style="padding:64px 0;background:#fff;border-top:1px solid #E4E7EB;">
+  <div class="section-inner">
+  <div class="eyebrow navy">Ⅳ. 테스트 전략</div>
+  <h1 class="page-title">테스트 우선순위</h1>
+  <div class="page-intro">자산 손실과 거래 오류 가능성이 높은 항목부터 정리했습니다.</div>
+
+  <div class="priority-block">
+    <div class="priority-row"><div class="priority-tag priority-p1">P1</div><div class="priority-text">카드·스타·포인트 손실, 보상 누락·중복, 구매 정합성</div></div>
+    <div class="priority-row"><div class="priority-tag priority-p2">P2</div><div class="priority-text">조건 판정, 누적 횟수, 우편 상태, 재접속 유지</div></div>
+    <div class="priority-row"><div class="priority-tag priority-p3">P3</div><div class="priority-text">문구, 아이콘, 정렬, 화면 표시</div></div>
+  </div>
+  <p class="caption">위 우선순위는 실제 발견된 결함이 아니라 검증 순서를 정하기 위한 기준입니다. P1~P3는 이 분석서가 정한 기준이며 공식 등급이 아닙니다.</p>
+  </div>
+</section>
+
+<section id="s18" class="portfolio-section" data-secid="18" style="padding:64px 0;background:#fff;border-top:1px solid #E4E7EB;">
+  <div class="section-inner">
+  <div class="eyebrow navy">Ⅳ. 테스트 전략</div>
+  <h1 class="page-title" style="font-size:30px;">대표 테스트 시나리오</h1>
+  <p class="page-intro" style="margin-bottom:22px;">아래 시나리오는 콘텐츠 구조 분석에서 도출한 검증 설계이며, 실제 수행 결과나 공식 기획 명세가 아닙니다. 자산 변경, 처리 중단, 경계값을 중심으로 구성했습니다.</p>
+
+  <div class="sub-heading" style="color:#dc2626;">우선 검증 — 자산이 동시에 바뀌는 지점</div>
+  <div class="scenario-grid-p1">
+    <div class="scenario-box">
+      <div class="scenario-title">완료 버튼 연속 입력</div>
+      <div class="scenario-body">
+        <div><span>조건 · </span>보드 완성이 가능한 상태</div>
+        <div><span>수행 · </span>완료 버튼을 짧은 간격으로 반복 입력</div>
+        <div><span>품질 기준 · </span>카드 소모·완료 횟수·보상 우편이 각각 한 번만 처리</div>
+        <div><span>선정 이유 · </span>입력 한 번이 여러 자산을 동시에 바꾸기 때문</div>
+      </div>
+    </div>
+    <div class="scenario-box">
+      <div class="scenario-title">완료 처리 중 네트워크 단절</div>
+      <div class="scenario-body">
+        <div><span>조건 · </span>완료 가능한 보드</div>
+        <div><span>수행 · </span>완료 요청 직후 네트워크를 차단했다가 복구</div>
+        <div><span>품질 기준 · </span>재접속 후 카드 소모 상태, 퍼즐 완료 상태, 보상 우편, 판타지 포인트 반영 상태가 서로 불일치하지 않음</div>
+        <div><span>선정 이유 · </span>카드만 소모되거나 보상만 중복될 위험</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-heading">추가 검증 — 경계값과 진행 상태</div>
+  <div class="scenario-rows">
+    <div class="scenario-row">
+      <div class="scenario-row-title">능력치 합계 경계값</div>
+      <div class="scenario-body" style="flex:1 1 400px;">
+        <div><span>조건 · </span>요구 합계와 동일한 조합, 1 낮은 조합</div>
+        <div><span>수행 · </span>두 조합을 각각 배치</div>
+        <div><span>품질 기준 · </span>동일 값은 충족되고, 1 낮은 값은 미충족</div>
+        <div><span>선정 이유 · </span>조건 판정의 포함 경계를 확인하기 위해</div>
+      </div>
+    </div>
+    <div class="scenario-row">
+      <div class="scenario-row-title">가격과 잔액이 같은 구매</div>
+      <div class="scenario-body" style="flex:1 1 400px;">
+        <div><span>조건 · </span>보유 판타지 포인트와 상품 가격이 동일</div>
+        <div><span>수행 · </span>상품 1개 구매</div>
+        <div><span>품질 기준 · </span>구매 성공, 잔액 0, 상품 1개 지급</div>
+        <div><span>선정 이유 · </span>재화가 정확히 소진되는 거래 경계를 확인하기 위해</div>
+      </div>
+    </div>
+    <div class="scenario-row" style="border-bottom:1px solid #E4E7EB;">
+      <div class="scenario-row-title">누적 99회에서 100회</div>
+      <div class="scenario-body" style="flex:1 1 400px;">
+        <div><span>조건 · </span>누적 완료 99회</div>
+        <div><span>수행 · </span>보드 1회 완료</div>
+        <div><span>품질 기준 · </span>누적 100회 반영과 Half 개방 조건이 함께 처리</div>
+        <div><span>선정 이유 · </span>장기 콘텐츠의 개방 경계를 확인하기 위해</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-panel" style="margin:20px 0 0;">
+    <div class="insight-label">공통 품질 기준</div>
+    <div class="quality-grid">
+      <div>카드·스타·포인트는 정확히 한 번만 변경됩니다</div>
+      <div>중단 후 재접속 시 자산·완료·보상 상태가 서로 일관되어야 합니다</div>
+      <div>재접속 후에도 상태가 유지됩니다</div>
+      <div>화면 표시와 저장된 데이터가 일치합니다</div>
+    </div>
+  </div>
+  <p class="caption" style="margin-top:12px;">이 시나리오와 품질 기준은 검증 계획이며, 실제 수행 결과나 공식 기획 명세가 아닙니다.</p>
+  </div>
+</section>
+
+<section id="s19" class="portfolio-section" data-secid="19" style="padding:72px 0;background:#F6F7F8;border-top:1px solid #E4E7EB;position:relative;overflow:hidden;">
+  <div class="motif-cycle" aria-hidden="true"></div>
+  <div class="section-inner">
+  <div class="eyebrow">종합 결론</div>
+  <h1 class="hero-title" style="margin-bottom:32px;">선택의 결과는 카드·재화·보상 전 구간에서 일관되게 이어져야 합니다.</h1>
+
+  <div class="conclusion-split">
+    <div class="conclusion-col" style="border-right:1px solid #E4E7EB;">
+      <div class="conclusion-label" style="color:#0f766e;">콘텐츠 구조 분석</div>
+      <div class="conclusion-sub">카드·스타·보상 선택</div>
+      <p>Live 퍼즐은 카드의 라인업 가치, 특훈 가치, 퍼즐 보상 가치를 비교하게 합니다. 선택한 카드는 판타지 포인트로 바뀌고, 상점에서 성장 방향을 다시 고릅니다.</p>
+    </div>
+    <div class="conclusion-col">
+      <div class="conclusion-label" style="color:#16213f;">QA 테스트 전략</div>
+      <div class="conclusion-sub">자산·거래·상태 일관성 검증</div>
+      <p>보드 완료 한 번에 카드 소모, 스타 차감, 보너스 판정, 누적 횟수, 우편, 포인트가 함께 바뀝니다. 표시된 카드·재화·보상과 실제 처리 결과가 일치하는지 확인합니다.</p>
+    </div>
+  </div>
+  </div>
+</section>
+
+<section id="s20" class="portfolio-section" data-secid="20" style="padding:96px 0 120px;background:#fff;border-top:1px solid #E4E7EB;text-align:center;">
+  <div class="section-inner closing-content">
+  <h1 class="hero-title" style="margin-bottom:0;">감사합니다.</h1>
+  <div style="font-size:17px;color:#374151;font-weight:700;margin-top:32px;">정재우</div>
+  <div style="font-size:15px;color:#5F6B7A;margin-top:8px;">게임 QA</div>
+  <div class="closing-rule"></div>
+  </div>
+</section>
+
+</div>
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>

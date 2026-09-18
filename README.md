@@ -17,6 +17,7 @@
 API로 수집한 KBO 경기 기록과 Live Update의 변화 방향을 비교한 분석서입니다.
 
 - [분석서 열기](https://com2us-v26-qa-portfolio.vercel.app/)
+- [V26 자료 안내](./QA_Portfolio/Com2uSProBaseballV26)
 
 ### 컴투스프로야구2026
 
@@ -25,9 +26,9 @@ Live 퍼즐의 카드 사용 가치와 보상 순환 구조를 분석하고, 직
 - [Live 퍼즐 분석서](https://jaewoo-qa-pr.vercel.app/documents/com2us2026/index.html)
 - [테스트케이스 — Google Sheets](https://docs.google.com/spreadsheets/d/1RYzdh1bFZNKb6pEx6XinJFy3us4jBj6_WgMJ6YLR9nk/edit?usp=sharing)
 - [버그리포트 — 신규 하드 리그 첫 경기의 출루율·OPS 표시 불일치](https://jaewoo-qa-pr.vercel.app/report-KAN-4.html)
-- [저장소 사본과 테스트 결과 요약](./99_Archive/Com2uSProBaseball2026)
+- [저장소 사본과 테스트 결과 요약](./QA_Portfolio/Com2uSProBaseball2026)
 
-저장소 사본은 기존 링크 유지를 위해 `99_Archive` 경로에 보관하고 있습니다. 현재 소개하는 주요 QA 포트폴리오에 포함됩니다.
+분석서 소스, 테스트케이스와 버그리포트는 `QA_Portfolio/Com2uSProBaseball2026`에서 확인할 수 있습니다.
 
 ### DAVE THE DIVER
 
