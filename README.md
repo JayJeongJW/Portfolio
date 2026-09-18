@@ -26,7 +26,7 @@ Live 퍼즐의 카드 사용 가치와 보상 순환 구조를 분석하고, 직
 - [Live 퍼즐 분석서](https://jaewoo-qa-pr.vercel.app/documents/com2us2026/index.html)
 - [테스트케이스 — Google Sheets](https://docs.google.com/spreadsheets/d/1RYzdh1bFZNKb6pEx6XinJFy3us4jBj6_WgMJ6YLR9nk/edit?usp=sharing)
 - [버그리포트 — 신규 하드 리그 첫 경기의 출루율·OPS 표시 불일치](https://jaewoo-qa-pr.vercel.app/report-KAN-4.html)
-- [저장소 사본과 테스트 결과 요약](./QA_Portfolio/Com2uSProBaseball2026)
+- [저장소 자료와 테스트 결과 요약](./QA_Portfolio/Com2uSProBaseball2026)
 
 분석서 소스, 테스트케이스와 버그리포트는 `QA_Portfolio/Com2uSProBaseball2026`에서 확인할 수 있습니다.
 

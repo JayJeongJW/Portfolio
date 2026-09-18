@@ -16,7 +16,7 @@ Live 퍼즐 분석과 직접 플레이 기반 테스트 자료입니다.
 - [웹 분석서](https://jaewoo-qa-pr.vercel.app/documents/com2us2026/index.html)
 - [테스트케이스 — Google Sheets](https://docs.google.com/spreadsheets/d/1RYzdh1bFZNKb6pEx6XinJFy3us4jBj6_WgMJ6YLR9nk/edit?usp=sharing)
 - [출루율·OPS 표시 불일치 버그리포트](https://jaewoo-qa-pr.vercel.app/report-KAN-4.html)
-- [저장소 사본·테스트 결과 요약](./Com2uSProBaseball2026)
+- [저장소 자료·테스트 결과 요약](./Com2uSProBaseball2026)
 
 분석서 소스·TC·버그리포트는 위 게임별 폴더에 정리했습니다.
 
